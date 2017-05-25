@@ -38,12 +38,28 @@ $(function() {
 		oTable.fnDraw();
 	});
 
+
+
+
+
+
+
+	$("#success_filter_value").click(function() {
+		success_selection = $("#success_filter_value").val();
+	//	alert (success_selection );
+		oTable.fnDraw();
+	});
+
+
+
 });
 
 
 //Date Range Filter
 minDateFilter = "";
 maxDateFilter = "";
+
+success_selection = "";
 
 $.fn.dataTableExt.afnFiltering.push(
 		function(oSettings, aData, iDataIndex) {
@@ -58,10 +74,34 @@ $.fn.dataTableExt.afnFiltering.push(
 			}
 
 			if (maxDateFilter && !isNaN(maxDateFilter)) {
+//	alert('doo pula');
 				if (aData._date > maxDateFilter) {
 					return false;
 				}
 			}
+
+
+//alert(!success_selection && success_selection!=="");
+//alert( success_selection!=="");
+//alert(success_selection );
+//alert(!success_selection );
+
+
+			if (success_selection=="false") {
+				if (aData[1]) {
+			return false;
+				}
+			}
+
+
+			if (success_selection=="true") {
+				if (!aData[1]) {
+			return false;
+				}
+			}
+
+
+
 
 			return true;
 		}
@@ -71,6 +111,8 @@ $.fn.dataTableExt.afnFiltering.push(
 //Success Filter
 /*
 success_selection = $("#success_filter_value").val();
+
+
 
 
 $.fn.dataTableExt.afnFiltering.push(

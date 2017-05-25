@@ -34,6 +34,7 @@ require_once 'functions/return_processed_emails_array.php';
  <select id="success_filter_value">
   <option value=true>Yes</option>
   <option value=false>No</option>
+  <option selected value=all>All</option>
 </select> 
 </p>
 
@@ -61,7 +62,8 @@ require_once 'functions/return_processed_emails_array.php';
 	while($row_att=$result_att->fetch_assoc()){
 		echo "<tr>
 				<td>{$row['parsed']}</td>
-				<td style='display:none;'>"."Maybe"."</td>
+				<td style='display:none;'>";
+if ($row_att['invoice_number']) {echo true;} else {echo false;} echo "</td>
 				<td>{$row['partner']}</td>
 				<td>{$row_att['invoice_amount']}</td>
 				<td>{$row_att['invoice_number']}</td>
