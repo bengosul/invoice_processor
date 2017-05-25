@@ -5,27 +5,55 @@ app.controller('MainCtrl', ['$scope', '$http', function ($scope, $http) {
 
 	};
 
-	$scope.gridOptions.enableFiltering = true;
-
-
 	$scope.gridOptions.columnDefs = [
-		{ name: 'id', enableCellEdit: false, minWidth:10, width:60},
-		{ name: 'config_name' },
-		{ name: 'email', displayName: 'email' , type: 'number', minWidth:250, width: "*" },
-		{ name: 'partner', displayName: 'partner', width: "*", minWidth:10, resizable:true },
-		{ name: 'Delete',  cellTemplate: '<button class="btn primary" ng-click="grid.appScope.deleteRow(row)">Delete</button>'
+		{ name: 'id', enableCellEdit: false, minWidth:10, width:60, type: 'number'},
+		{ name: 'config_name', minWidth:80 },
+		{ name: 'partner', displayName: 'partner', width: "*", minWidth:100, resizable:true },
+		{ name: 'email', displayName: 'email' , minWidth:230, width: "*" },
+		{ name: 'subject', displayName: 'subject' , width: "*" },
+		{ name: 'atttype', displayName: 'atttype' , width:80 },
+		{ name: 'inv_no_str', displayName: 'inv_no str' , minWidth:130, width: "*" },
+		{ name: 'inv_no_col_offset', displayName: 'inv_no col offset' , minWidth:50, width: "*", type: 'number'},
+		{ name: 'inv_no_row_offset', displayName: 'inv_no row offset' , minWidth:50, width: "*",type: 'number'},
+		{ name: 'inv_date_str', displayName: 'inv_date str' ,minWidth:130, width: "*" },
+		{ name: 'inv_date_col_offset', displayName: 'inv_date col offset', minWidth:50 , width: "*", type: 'number' },
+		{ name: 'inv_date_row_offset', displayName: 'inv_date row offset', minWidth:50 , width: "*", type: 'number' },
+		{ name: 'inv_date_format', displayName: 'inv_date format' , width: "*"  },
+
+
+		{ name: 'Delete', width:80, cellTemplate: '<button class="btn primary" ng-click="grid.appScope.deleteRow(row)">Delete</button>'
 	  }
 
 
 ];
 
 $scope.deleteRow = function(row) {
+
+if(row.entity.id) {
+
 var aha = confirm("you sure?");
+
 if (aha){
+	$http.post("../functions/delete_configs_rest.php", {id:row.entity.id}, {headers: {'Content-Type': 'application/json'} })
+		        .then(function (response) {
+					if (response.data.indexOf("fuck") !== -1 ) {
+				alert ('oh shit');
+					}
+					            return response;
+								        });
+
+	}
+	else {return;}
+
+
+}
+
+
       var index = $scope.gridOptions.data.indexOf(row.entity);
       $scope.gridOptions.data.splice(index, 1);
-	  alert (row.entity.id);
-	}
+	//  alert (row.entity.id);
+
+
 };
 
 

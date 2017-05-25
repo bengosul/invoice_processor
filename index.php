@@ -18,10 +18,13 @@ require_once 'functions/return_processed_emails_array.php';
 <script data-require="jqueryui@*" data-semver="1.10.0" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.0/jquery-ui.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/datatables/1.9.4/jquery.dataTables.js" data-semver="1.9.4" data-require="datatables@*"></script>
 <link href="style.css" rel="stylesheet" />
-<script src="script.js"></script>
+<script src="results.js"></script>
 </head>
 
 <body>
+
+</br><a href="config_angular/configs.php">Config Page</a></br>
+
 <p id="date_filter">
 <span id="date-label-from" class="date-label">From: </span><input class="date_range_filter date" type="text" id="datepicker_from" />
 <span id="date-label-to" class="date-label">To: </span><input class="date_range_filter date" type="text" id="datepicker_to" />
