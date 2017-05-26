@@ -17,9 +17,9 @@ echo "Connected successfully";
 insert_break();
 
 // Check existing rows
-$sql = "SELECT * from emails.processed_emails LIMIT 10";
+$sql = "SELECT * from emails.processed_emails";
 $result = $conn->query($sql);
 
-echo "--- printing top 10 existing in db---";
+// echo "--- printing top 10 existing in db---";
 
 ?>

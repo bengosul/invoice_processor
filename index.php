@@ -42,10 +42,12 @@ require_once 'functions/return_processed_emails_array.php';
 	<thead>
 		<tr>
 			<th>Processed</th>
+			<th>Sent</th>
 			<th style='display:none;'>Success</th>
 			<th>Partner</th>
 			<th>Amount</th>
 			<th>InvNo</th>
+			<th>InvDate</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -60,13 +62,16 @@ require_once 'functions/return_processed_emails_array.php';
 	$result_att = $conn->query($sql);
 
 	while($row_att=$result_att->fetch_assoc()){
+// var_dump($row);
 		echo "<tr>
 				<td>{$row['parsed']}</td>
+				<td>{$row['received']}</td>
 				<td style='display:none;'>";
 if ($row_att['invoice_number']) {echo true;} else {echo false;} echo "</td>
 				<td>{$row['partner']}</td>
 				<td>{$row_att['invoice_amount']}</td>
 				<td>{$row_att['invoice_number']}</td>
+				<td>{$row_att['invoice_date']}</td>
 			</tr>";
 		}
 	}

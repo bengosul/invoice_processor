@@ -55,20 +55,28 @@ require_once 'inbox_class.php';
 $email_object = New Email_reader();
 $inbox_array=$email_object->output();
 echo "Found ".count($inbox_array). " new emails"; insert_break();
+echo "<a href='maintenance.html'>Main Page</a>";
+
 foreach ($inbox_array as $email){
-	echo "adding"; insert_break();
+	insert_break();	echo "adding"; insert_break();
 	$subj= $email["index"].$email["header"]->subject;
-	$from_name=  $email["index"].$email["header"]->fromaddress;
+	$from_name= $email["header"]->fromaddress;
 	$from_address = $email['header']->from[0]->mailbox."@".$email['header']->from[0]->host;
-	$received= $email["index"].$email["header"]->date;
+//	$received= $email["index"].$email["header"]->date;
+	$received= $email["header"]->date;
+	$received= date('Y-m-d H:i:s',strtotime($received));
+
 	// print_r($value["structure"]);
 	$subject= iconv_mime_decode($subj,0,"UTF-8");
 	$subject=mysqli_real_escape_string($conn, $subject);
 	$count=0;
 
 	//Insert email data to retrieve index
-	$sql = "INSERT into `emails`.`processed_emails`(subject, received, attachments, partner, from_address, invoice_date, invoice_amount, invoice_number,parsed)
-		VALUES ('$subject','$received','$attachments','$partner','$from_address','$invoice_date','$invoice_amount','$invoice_number','$invoice_date')";
+	$sql = "INSERT into `emails`.`processed_emails`(subject, received, attachments, partner, from_address,parsed)
+		VALUES ('$subject','$received','$attachments','$partner','$from_address','$invoice_date')";
+
+echo $sql;
+
 	$result=$conn->query($sql) or die($conn->error);
 	// echo 'insertid:'.$conn->insert_id;
 	if(!$result) echo "</br> insert Failed </br>";

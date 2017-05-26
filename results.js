@@ -4,7 +4,7 @@ $(function() {
 		"oLanguage": {
 			"sSearch": "Filter Data"
 		},
-		"iDisplayLength": -1,
+		"iDisplayLength": 12,
 		"sPaginationType": "full_numbers",
 
 	});
@@ -88,14 +88,14 @@ $.fn.dataTableExt.afnFiltering.push(
 
 
 			if (success_selection=="false") {
-				if (aData[1]) {
+				if (aData[2]) {
 			return false;
 				}
 			}
 
 
 			if (success_selection=="true") {
-				if (!aData[1]) {
+				if (!aData[2]) {
 			return false;
 				}
 			}

@@ -1,5 +1,6 @@
 <?php
 require_once '../configs/config.php';
+require_once 'functions/general_functions.php';
 
 Class Email_reader {
 
@@ -34,10 +35,25 @@ Class Email_reader {
 	// the imap_open function parameters will need to be changed for the particular server
 	// these are laid out to connect to a Dreamhost IMAP server
 	function connect() {
+// echo  '{'.$this->server.'/ssl},'. $this->user.','. $this->pass;
+insert_break();
+
 		$this->conn = imap_open('{'.$this->server.'/ssl}', $this->user, $this->pass);
 	
 //		$this->conn = imap_open('{'.$this->server.'/notls}', $this->user, $this->pass);
+
+//list folders
+//var_dump ( imap_list($this->conn, "{imap.gmail.com/ssl}", "*")); 
+
 	}
+
+	function change_folder($folder){
+		$this->close();
+		$this->conn = imap_open('{'.$this->server.'/ssl}'.$folder, $this->user, $this->pass);
+		$this->inbox();
+	}
+	
+
 
 
 	// move the message to a new folder
