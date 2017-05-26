@@ -5,7 +5,7 @@
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-touch.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-animate.js"></script>
     <script src="http://ui-grid.info/docs/grunt-scripts/csv.js"></script>
-    <script src="http://ui-grid.info/docs/grunt-scripts/pdfmake.js"></script>
+<!--    <script src="http://ui-grid.info/docs/grunt-scripts/pdfmake.js"></script> -->
     <script src="http://ui-grid.info/docs/grunt-scripts/vfs_fonts.js"></script>
     <script src="http://ui-grid.info/release/ui-grid-unstable.js"></script>
     <link rel="stylesheet" href="http://ui-grid.info/release/ui-grid-unstable.css" type="text/css">

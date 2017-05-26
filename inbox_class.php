@@ -1,5 +1,5 @@
 <?php
-require_once '../classes/config.php';
+require_once '../configs/config.php';
 
 Class Email_reader {
 

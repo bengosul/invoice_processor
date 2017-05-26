@@ -5,7 +5,7 @@ echo '<html><body bgcolor="#000000" text="white"><pre>';
 }
 
 require_once 'functions/general_functions.php';
-require_once '../classes/config.php';
+require_once '../configs/config.php';
 $servername = config::MYSQL_SERVER;
 $username = config::MYSQL_USER;
 $password = config::MYSQL_PASS;
@@ -27,7 +27,7 @@ $result = $conn->query($sql);
 echo "--- printing top 10 existing in db---";
 insert_break();
 while($row = $result->fetch_assoc()) {
-	echo var_dump($row['subject'])."<hr />";
+	echo $row['id'].var_dump($row['subject'])."<hr />";
 	//		        echo "id: " . $row["id"]. " Subject: " . $row["subject"]. "<br>";
 }
 insert_break();

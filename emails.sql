@@ -1,5 +1,3 @@
-create database if not exists emails;
-
 -- MySQL dump 10.16  Distrib 10.1.22-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: emails
@@ -39,7 +37,7 @@ CREATE TABLE `match_config` (
   `inv_date_row_offset` int(11) NOT NULL,
   `inv_date_format` varchar(20) NOT NULL,
   UNIQUE KEY `idx` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -48,7 +46,7 @@ CREATE TABLE `match_config` (
 
 LOCK TABLES `match_config` WRITE;
 /*!40000 ALTER TABLE `match_config` DISABLE KEYS */;
-INSERT INTO `match_config` VALUES (1,'test','test1','testinvoice2@gmail.com','','txt','invoice number',0,0,'invoice date',0,0,''),(2,'MOI','','valentin.lihatchi@gmail.com','','','apa',0,0,'',0,0,'');
+INSERT INTO `match_config` VALUES (1,'test','test1x','testinvoice2@gmail.com','','txt','invoice number',0,0,'invoice date',0,0,''),(2,'MOI','test2','valentin.lihatchi@gmail.com','','','apa',0,0,'',0,0,''),(17,'','sdfd','','','','',0,0,'',0,0,''),(19,'','cucu','','','','',0,0,'',0,0,'');
 /*!40000 ALTER TABLE `match_config` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -68,9 +66,6 @@ SET character_set_client = utf8;
   `attachments` tinyint NOT NULL,
   `partner` tinyint NOT NULL,
   `from_address` tinyint NOT NULL,
-  `invoice_date` tinyint NOT NULL,
-  `invoice_amount` tinyint NOT NULL,
-  `invoice_number` tinyint NOT NULL,
   `parsed` tinyint NOT NULL
 ) ENGINE=MyISAM */;
 SET character_set_client = @saved_cs_client;
@@ -86,7 +81,7 @@ CREATE TABLE `processed_attachments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_email` int(11) NOT NULL,
   `id_attachment` int(11) NOT NULL,
-  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `invoice_date` date NOT NULL,
   `invoice_amount` decimal(9,2) NOT NULL,
   `invoice_number` varchar(30) NOT NULL,
@@ -94,7 +89,7 @@ CREATE TABLE `processed_attachments` (
   UNIQUE KEY `IX_EMAIL_ATTACH` (`id_email`,`id_attachment`),
   KEY `id_email` (`id_email`),
   CONSTRAINT `FK_IDEMAIL` FOREIGN KEY (`id_email`) REFERENCES `processed_emails` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -103,7 +98,7 @@ CREATE TABLE `processed_attachments` (
 
 LOCK TABLES `processed_attachments` WRITE;
 /*!40000 ALTER TABLE `processed_attachments` DISABLE KEYS */;
-INSERT INTO `processed_attachments` VALUES (37,1,1,'2017-05-07 13:11:21','0000-00-00',0.00,': cac555'),(38,1,2,'2017-05-07 13:11:21','0000-00-00',0.00,''),(39,6,1,'2017-05-07 13:11:21','0000-00-00',0.00,'n, the Philippines, Brazil, Ne'),(40,7,1,'2017-05-07 13:11:21','0000-00-00',0.00,' minerala');
+INSERT INTO `processed_attachments` VALUES (49,1,1,'2017-05-26 18:56:14','0000-00-00',0.00,': cac555'),(50,1,2,'2017-05-26 18:56:14','0000-00-00',0.00,''),(51,6,1,'2017-05-26 18:56:15','0000-00-00',0.00,'n, the Philippines, Brazil, Ne'),(52,7,1,'2017-05-26 18:56:15','0000-00-00',0.00,' minerala'),(53,8,1,'2017-05-26 18:56:15','0000-00-00',0.00,''),(54,9,1,'2017-05-26 18:56:15','0000-00-00',0.00,''),(55,10,1,'2017-05-26 18:56:15','0000-00-00',0.00,''),(56,11,1,'2017-05-26 18:56:15','0000-00-00',0.00,'');
 /*!40000 ALTER TABLE `processed_attachments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -122,12 +117,9 @@ CREATE TABLE `processed_emails` (
   `attachments` int(11) NOT NULL,
   `partner` varchar(20) NOT NULL,
   `from_address` varchar(100) NOT NULL,
-  `invoice_date` date NOT NULL,
-  `invoice_amount` decimal(9,2) NOT NULL,
-  `invoice_number` varchar(30) NOT NULL,
   `parsed` datetime NOT NULL,
   UNIQUE KEY `idindex` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -136,7 +128,7 @@ CREATE TABLE `processed_emails` (
 
 LOCK TABLES `processed_emails` WRITE;
 /*!40000 ALTER TABLE `processed_emails` DISABLE KEYS */;
-INSERT INTO `processed_emails` VALUES (1,'1An email sent from PHP3','0000-00-00 00:00:00','0000-00-00 00:00:00',2,'test','testinvoice2@gmail.com','0000-00-00',0.00,'','2017-05-07 13:11:21'),(2,'2Cele mai bune funcÈ›ii Gmail, oriunde te-ai afla','0000-00-00 00:00:00','0000-00-00 00:00:00',0,'','mail-noreply@google.com','0000-00-00',0.00,'','0000-00-00 00:00:00'),(3,'3OrganizeazÄƒ-te mai bine cu ajutorul cÄƒsuÈ›ei Gmail','0000-00-00 00:00:00','0000-00-00 00:00:00',0,'','mail-noreply@google.com','0000-00-00',0.00,'','0000-00-00 00:00:00'),(4,'4Trei sfaturi pentru a profita la maximum de Gmail','0000-00-00 00:00:00','0000-00-00 00:00:00',0,'','mail-noreply@google.com','0000-00-00',0.00,'','0000-00-00 00:00:00'),(5,'1testt','0000-00-00 00:00:00','0000-00-00 00:00:00',0,'','valentin.lihatchi@gmail.com','0000-00-00',0.00,'','0000-00-00 00:00:00'),(6,'1locked pdf','0000-00-00 00:00:00','0000-00-00 00:00:00',1,'MOI','valentin.lihatchi@gmail.com','0000-00-00',0.00,'','2017-05-07 13:11:21'),(7,'1protecteddoc','0000-00-00 00:00:00','2017-05-06 02:00:35',1,'MOI','valentin.lihatchi@gmail.com','0000-00-00',0.00,'','2017-05-07 13:11:21');
+INSERT INTO `processed_emails` VALUES (1,'1An email sent from PHP3','0000-00-00 00:00:00','0000-00-00 00:00:00',2,'test','testinvoice2@gmail.com','2017-05-26 18:56:14'),(2,'2Cele mai bune funcÈ›ii Gmail, oriunde te-ai afla','0000-00-00 00:00:00','0000-00-00 00:00:00',0,'','mail-noreply@google.com','0000-00-00 00:00:00'),(3,'3OrganizeazÄƒ-te mai bine cu ajutorul cÄƒsuÈ›ei Gmail','0000-00-00 00:00:00','0000-00-00 00:00:00',0,'','mail-noreply@google.com','0000-00-00 00:00:00'),(4,'4Trei sfaturi pentru a profita la maximum de Gmail','0000-00-00 00:00:00','0000-00-00 00:00:00',0,'','mail-noreply@google.com','0000-00-00 00:00:00'),(5,'1testt','0000-00-00 00:00:00','0000-00-00 00:00:00',0,'','valentin.lihatchi@gmail.com','0000-00-00 00:00:00'),(6,'1locked pdf','0000-00-00 00:00:00','0000-00-00 00:00:00',1,'MOI','valentin.lihatchi@gmail.com','2017-05-26 18:56:14'),(7,'1protecteddoc','0000-00-00 00:00:00','2017-05-06 02:00:35',1,'MOI','valentin.lihatchi@gmail.com','2017-05-26 18:56:15'),(8,'1An email sent from PHP3','0000-00-00 00:00:00','2017-05-26 17:43:15',1,'test','testinvoice2@gmail.com','2017-05-26 18:56:15'),(9,'2An email sent from PHP3 queued','0000-00-00 00:00:00','2017-05-26 17:43:16',1,'test','testinvoice2@gmail.com','2017-05-26 18:56:15'),(10,'3An email sent from PHP3 queued','0000-00-00 00:00:00','2017-05-26 17:43:17',1,'test','testinvoice2@gmail.com','2017-05-26 18:56:15'),(11,'4An email sent from PHP3 queued','0000-00-00 00:00:00','2017-05-26 17:43:18',1,'test','testinvoice2@gmail.com','2017-05-26 18:56:15'),(12,'5An email sent from PHP3 queued','0000-00-00 00:00:00','2017-05-26 17:43:19',0,'','testinvoice2@gmail.com','0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `processed_emails` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -154,7 +146,7 @@ UNLOCK TABLES;
 /*!50001 SET collation_connection      = utf8mb4_unicode_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `missing_partner` AS select `e`.`id` AS `id`,`e`.`subject` AS `subject`,`e`.`received` AS `received`,`e`.`processed` AS `processed`,`e`.`attachments` AS `attachments`,`e`.`partner` AS `partner`,`e`.`from_address` AS `from_address`,`e`.`invoice_date` AS `invoice_date`,`e`.`invoice_amount` AS `invoice_amount`,`e`.`invoice_number` AS `invoice_number`,`e`.`parsed` AS `parsed` from (`processed_emails` `e` left join `processed_attachments` `a` on((`e`.`id` = `a`.`id_email`))) where ((`e`.`attachments` > 0) and (`e`.`parsed` > 0) and isnull(`a`.`id_email`)) */;
+/*!50001 VIEW `missing_partner` AS select `e`.`id` AS `id`,`e`.`subject` AS `subject`,`e`.`received` AS `received`,`e`.`processed` AS `processed`,`e`.`attachments` AS `attachments`,`e`.`partner` AS `partner`,`e`.`from_address` AS `from_address`,`e`.`parsed` AS `parsed` from (`processed_emails` `e` left join `processed_attachments` `a` on((`e`.`id` = `a`.`id_email`))) where ((`e`.`attachments` > 0) and (`e`.`parsed` > 0) and isnull(`a`.`id_email`)) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -168,4 +160,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-05-24 15:53:34
+-- Dump completed on 2017-05-26 19:05:34

@@ -4,7 +4,7 @@ if(php_sapi_name()!="cli"){
 	echo '<html><body bgcolor="#000000" text="white"><pre>';
 }
 
-require_once '../classes/config.php';
+require_once '../configs/config.php';
 require_once 'functions/general_functions.php';
 
 $servername = config::MYSQL_SERVER;
