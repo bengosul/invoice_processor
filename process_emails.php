@@ -139,7 +139,7 @@ echo $sql;
 
 				echo	"</br>insertid: ".$conn->insert_id;
 //				print_r($attachments[$i]);
-				file_put_contents("/store/".sprintf('%06d',$conn->insert_id)."_".sprintf('%02d',$count)."_".$attachments[$i]['filename'], $attachments[$i]['attachment']);
+				file_put_contents("../store/".sprintf('%06d',$conn->insert_id)."_".sprintf('%02d',$count)."_".$attachments[$i]['filename'], $attachments[$i]['attachment']);
 				// echo	mkdir("/store/xxx2");	
 			}
 		}

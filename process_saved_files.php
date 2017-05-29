@@ -56,7 +56,7 @@ if($result = $conn->query($sql))
 		//if ($client_config['partner']=='initial'){echo "config not found";continue;}
 
 		// Retrieve filenames that need processing;
-		$filepattern= "/store/".sprintf('%06d',$row['id']);
+		$filepattern= "../store/".sprintf('%06d',$row['id']);
 		$filenames=glob("$filepattern*.*");
 		$processedfilename=1;
 		foreach ($filenames as $fn){
