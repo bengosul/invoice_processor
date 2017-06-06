@@ -1,14 +1,18 @@
 var app = angular.module('app', ['ngTouch', 'ui.grid', 'ui.grid.edit']);
 
 app.controller('MainCtrl', ['$scope', '$http', function ($scope, $http) {
-	$scope.gridOptions = {
+	$scope.filterOptions = {
+	              filterText: ''
+	      };
 
+	$scope.gridOptions = {
+		enableFiltering : true
 	};
 
 	$scope.gridOptions.columnDefs = [
 		{ name: 'id', enableCellEdit: false, minWidth:10, width:60, type: 'number'},
 		{ name: 'config_name', minWidth:80 },
-		{ name: 'partner', displayName: 'partner', width: "*", minWidth:100, resizable:true },
+		{ name: 'partner', displayName: 'partner', width: "*", minWidth:100, resizable:true, enableFiltering: true },
 		{ name: 'email', displayName: 'email' , minWidth:230, width: "*" },
 		{ name: 'subject', displayName: 'subject' , width: "*" },
 		{ name: 'atttype', displayName: 'atttype' , width:80 },
@@ -58,7 +62,7 @@ if (aha){
 
 
 $scope.addNewItem = function() {
-	$scope.gridOptions.data.push({ });
+	$scope.gridOptions.data.push({config_name: 'Test add ' });
 };
 
 
@@ -73,9 +77,18 @@ $scope.gridOptions.onRegisterApi = function(gridApi) {
 	//		      set gridApi on scope
 	$scope.gridApi = gridApi;
 	gridApi.edit.on.afterCellEdit($scope, function(rowEntity, colDef, newValue, oldValue) {
+	
+		if (rowEntity.config_name===undefined || rowEntity.config_name==""
+		|| rowEntity.partner===undefined || rowEntity.partner=="")	{
+			$http.get('../functions/return_configs_json.php')
+				.success(function(data) {
+					$scope.gridOptions.data = data;
+			})
+			return alert ('config and partner must have a name');  }
+
 		//Do your REST call here via $hhtp.get or $http.post
 		//This alert just shows which info about the edit is available
-	$http.post("../functions/update_configs_rest.php", {id:rowEntity.id, config_name:rowEntity.config_name}, {headers: {'Content-Type': 'application/json'} })
+	$http.post("../functions/update_configs_rest.php", {id:rowEntity.id, config_name:rowEntity.config_name, partner:rowEntity.partner, email:rowEntity.email}, {headers: {'Content-Type': 'application/json'} })
 		        .then(function (response) {
 					if (response.data.indexOf("fuck") !== -1 ) {
 				alert ('oh shit');
@@ -83,7 +96,7 @@ $scope.gridOptions.onRegisterApi = function(gridApi) {
 					            return response;
 								        });
 
-		alert('Column: ' + colDef.name + ' ID: ' + rowEntity.id + ' Name: ' + rowEntity.config_name + ' Partner: ' + rowEntity.partner);
+		alert('Updating Column: ' + colDef.name + ' ID: ' + rowEntity.id + ' Name: ' + rowEntity.config_name + ' Partner: ' + rowEntity.partner);
 //$scope.gridApi.core.refresh()
 		
 //	$scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.ALL)  ;

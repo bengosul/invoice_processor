@@ -29,7 +29,7 @@ print json_encode($data);
 $_POST = json_decode(file_get_contents('php://input'), true);
 if(!empty($_POST['id']))
 {
-	$upd_query="UPDATE emails.match_config set config_name='{$_POST['config_name']}' where id = {$_POST['id']}";
+	$upd_query="UPDATE emails.match_config set config_name='{$_POST['config_name']}', partner='{$_POST['partner']}' where id = {$_POST['id']}";
 }
 else{
 	$upd_query="INSERT emails.match_config (config_name) VALUES('{$_POST['config_name']}')";
@@ -46,7 +46,7 @@ $result= $conn->query($upd_query) or die(mysqli_error($conn)) ;
 // echo json_encode($result->fetchAll());
 var_dump($result);
 if (!mysqli_affected_rows($conn)) {
-echo "<html><body><script type='text/javascript'>alert('fuck this');</script></body></html>";
+echo "<html><body><script type='text/javascript'>".mysqli_error($conn).$result."alert('fuck thiss');</script></body></html>";
 }
 
 
