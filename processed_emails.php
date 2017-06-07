@@ -5,7 +5,7 @@ echo '<html><body bgcolor="#000000" text="white" style="color:cyan;font-family: 
 }
 
 require_once 'functions/general_functions.php';
-require_once '../classes/config.php';
+require_once '../configs/config.php';
 $servername = config::MYSQL_SERVER;
 $username = config::MYSQL_USER;
 $password = config::MYSQL_PASS;
