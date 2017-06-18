@@ -5,8 +5,9 @@ $(function() {
 			"sSearch": "Filter Data"
 		},
 		"iDisplayLength": 12,
-		"sPaginationType": "full_numbers",
-
+		"sPaginationType": "full_numbers"
+	//	,
+// "bPaginate" : false
 	});
 
 
@@ -49,6 +50,27 @@ $(function() {
 	//	alert (success_selection );
 		oTable.fnDraw();
 	});
+
+
+
+
+
+				     
+				     $("#btnExport").click(function(e) 
+						     {
+//	$('#datatable').DataTable.iDisplayLength=1000;
+// oTable.bPaginate=false;		
+
+//	$('#datatable').DataTable.bPaginate=false;
+
+//	e.preventDefault();
+										        window.open('data:application/vnd.ms-excel,' + 
+													        	encodeURIComponent(oTable[0].outerHTML));
+												    });
+
+
+
+
 
 
 
@@ -128,6 +150,18 @@ $.fn.dataTableExt.afnFiltering.push(
 			return false;
 		}
 		);
-*/
 
 
+ $(function () 
+		 {
+			     var tab = $('#datatable').dataTable();
+				     
+				     $("#btnExport").click(function(e) 
+						     {
+								     	e.preventDefault();
+										        window.open('data:application/vnd.ms-excel,' + 
+													        	encodeURIComponent(tab[0].outerHTML));
+												    });
+		 });
+ 
+*/ 

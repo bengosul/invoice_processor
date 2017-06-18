@@ -3,7 +3,7 @@ require_once 'functions/return_processed_emails_array.php';
 ?>
 
 
-<html>
+<html> 
 
 <head>
 <meta charset="utf-8" />
@@ -21,22 +21,25 @@ require_once 'functions/return_processed_emails_array.php';
 <script src="results.js"></script>
 </head>
 
-<body>
+<body style="text:cyan; bgcolor:black">
 
-</br><a href="config_angular/configs.php">Config Page</a></br>
+<a style="float:left;" href="config_angular/configs.php"> To Config Page</a>
 
-<p id="date_filter">
-<span id="date-label-from" class="date-label">From: </span><input class="date_range_filter date" type="text" id="datepicker_from" />
-<span id="date-label-to" class="date-label">To: </span><input class="date_range_filter date" type="text" id="datepicker_to" />
-</p>
+<button id="btnExport" style="float:right;">Export</button></br></br>
 
-<p id="success_filter">Successful: 
+<div id="success_filter" style="float:right;">Successful: 
  <select id="success_filter_value">
   <option value=true>Yes</option>
   <option value=false>No</option>
   <option selected value=all>All</option>
 </select> 
-</p>
+</div>
+
+<div id="date_filter" style="float:right;">
+<span id="date-label-from" class="date-label">From: </span><input class="date_range_filter date" type="text" id="datepicker_from" />
+<span id="date-label-to" class="date-label">To: </span><input class="date_range_filter date" type="text" id="datepicker_to" />
+</div>
+
 
 <table width="100%" class="display" id="datatable">
 	<thead>
@@ -48,11 +51,17 @@ require_once 'functions/return_processed_emails_array.php';
 			<th>Amount</th>
 			<th>InvNo</th>
 			<th>InvDate</th>
-		</tr>
+			<th>Orig</th>	
+			<th>Txt</th>
+	</tr>
 	</thead>
 	<tbody>
 
 <?php
+
+
+$storelocation="/store/";
+
 	while($row = $result->fetch_assoc()) {
 
 		//		        echo "id: " . $row["id"]. " Subject: " . $row["subject"]. "<br>";
@@ -62,7 +71,10 @@ require_once 'functions/return_processed_emails_array.php';
 	$result_att = $conn->query($sql);
 
 	while($row_att=$result_att->fetch_assoc()){
-// var_dump($row);
+		$filename_orig=$storelocation.sprintf('%06d',$row_att['id_email']).'_'.sprintf('%02d',$row_att['id_attachment']).$row_att['fn'].$row_att['extension'];
+		$filename_txt=$storelocation."temp/".sprintf('%06d',$row_att['id_email']).'_'.sprintf('%02d',$row_att['id_attachment']).$row_att['fn'].".txt";
+		$dlname_orig=$row['partner'].$filename_orig;
+		// var_dump($row);
 		echo "<tr>
 				<td>{$row['parsed']}</td>
 				<td>{$row['received']}</td>
@@ -72,6 +84,8 @@ if ($row_att['invoice_number']) {echo true;} else {echo false;} echo "</td>
 				<td>{$row_att['invoice_amount']}</td>
 				<td>{$row_att['invoice_number']}</td>
 				<td>{$row_att['invoice_date']}</td>
+				<td><a dwonload='{$dlname_orig}' href='{$filename_orig}'>Download</a></td>
+				<td><a href='{$filename_txt}'>Download</a></td>
 			</tr>";
 		}
 	}

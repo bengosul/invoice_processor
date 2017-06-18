@@ -108,8 +108,8 @@ if($result = $conn->query($sql))
 			
 				$res=$conn->query($sql) or die($conn->error);
 
-				$sql = "INSERT `emails`.`processed_attachments` (id_email, id_attachment, invoice_number)
-						VALUES (".$row['id'].",".$processedfilename.",'$invoice_number')";
+				$sql = "INSERT `emails`.`processed_attachments` (id_email, id_attachment, invoice_number, fn)
+						VALUES (".$row['id'].",".$processedfilename.",'$invoice_number','$fn')";
 			
 				$res=$conn->query($sql) or die($conn->error);
 				insert_break();
