@@ -60,7 +60,9 @@ if($result = $conn->query($sql))
 		$filenames=glob("$filepattern*.*");
 		$processedfilename=1;
 		foreach ($filenames as $fn){
-
+			echo $fn;
+			$extension = pathinfo($fn, PATHINFO_EXTENSION);
+			$origStripFilename = substr(basename($fn, ".".$extension),10);
 			//reset values
 			$invoice_number ="";
 			
@@ -108,8 +110,8 @@ if($result = $conn->query($sql))
 			
 				$res=$conn->query($sql) or die($conn->error);
 
-				$sql = "INSERT `emails`.`processed_attachments` (id_email, id_attachment, invoice_number, fn)
-						VALUES (".$row['id'].",".$processedfilename.",'$invoice_number','$fn')";
+				$sql = "INSERT `emails`.`processed_attachments` (id_email, id_attachment, invoice_number, fn, extension)
+						VALUES (".$row['id'].",".$processedfilename.",'$invoice_number','$origStripFilename','$extension')";
 			
 				$res=$conn->query($sql) or die($conn->error);
 				insert_break();

@@ -66,21 +66,27 @@ $storelocation="/store/";
 
 		//		        echo "id: " . $row["id"]. " Subject: " . $row["subject"]. "<br>";
 
-	$sql = "SELECT * from emails.processed_attachments 
+	//	print_r($row);
+		$sql = "SELECT *, a.id as aid
+			from emails.processed_attachments p
+			left join emails.accounts a
+			on '{$row['partner']}'=a.id
 			WHERE id_email={$row['id']}";
-	$result_att = $conn->query($sql);
+
+		$result_att = $conn->query($sql);
 
 	while($row_att=$result_att->fetch_assoc()){
-		$filename_orig=$storelocation.sprintf('%06d',$row_att['id_email']).'_'.sprintf('%02d',$row_att['id_attachment']).$row_att['fn'].$row_att['extension'];
-		$filename_txt=$storelocation."temp/".sprintf('%06d',$row_att['id_email']).'_'.sprintf('%02d',$row_att['id_attachment']).$row_att['fn'].".txt";
-		$dlname_orig=$row['partner'].$filename_orig;
+
+		$filename_orig=$storelocation.sprintf('%06d',$row_att['id_email']).'_'.sprintf('%02d',$row_att['id_attachment']).'_'.$row_att['fn'].".".$row_att['extension'];
+		$filename_txt=$storelocation."temp/".sprintf('%06d',$row_att['id_email']).'_'.sprintf('%02d',$row_att['id_attachment']).'_'.$row_att['fn'].".txt";
+		$dlname_orig=$row['partner']."_".$filename_orig;
 		// var_dump($row);
 		echo "<tr>
 				<td>{$row['parsed']}</td>
 				<td>{$row['received']}</td>
 				<td style='display:none;'>";
 if ($row_att['invoice_number']) {echo true;} else {echo false;} echo "</td>
-				<td>{$row['partner']}</td>
+				<td>{$row_att['accname']}</td>
 				<td>{$row_att['invoice_amount']}</td>
 				<td>{$row_att['invoice_number']}</td>
 				<td>{$row_att['invoice_date']}</td>
