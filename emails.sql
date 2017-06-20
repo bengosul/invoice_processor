@@ -127,7 +127,7 @@ CREATE TABLE `processed_attachments` (
   UNIQUE KEY `IX_EMAIL_ATTACH` (`id_email`,`id_attachment`),
   KEY `id_email` (`id_email`),
   CONSTRAINT `FK_IDEMAIL` FOREIGN KEY (`id_email`) REFERENCES `processed_emails` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -136,6 +136,14 @@ CREATE TABLE `processed_attachments` (
 
 LOCK TABLES `processed_attachments` WRITE;
 /*!40000 ALTER TABLE `processed_attachments` DISABLE KEYS */;
+INSERT INTO `processed_attachments` VALUES (1,88,1,'2017-06-20 22:34:05','0000-00-00',0.00,'','awesometextfile','txt');
+INSERT INTO `processed_attachments` VALUES (2,93,1,'2017-06-20 22:34:06','0000-00-00',0.00,'n, the Philippines, Brazil, Ne','ECR01-1 (1)','pdf');
+INSERT INTO `processed_attachments` VALUES (3,94,1,'2017-06-20 22:34:06','0000-00-00',0.00,' minerala','media-d92a55db','pdf');
+INSERT INTO `processed_attachments` VALUES (4,95,1,'2017-06-20 22:34:06','0000-00-00',0.00,'','awesometextfile','txt');
+INSERT INTO `processed_attachments` VALUES (5,96,1,'2017-06-20 22:34:06','0000-00-00',0.00,'','awesometextfile','txt');
+INSERT INTO `processed_attachments` VALUES (6,97,1,'2017-06-20 22:34:06','0000-00-00',0.00,'','awesometextfile','txt');
+INSERT INTO `processed_attachments` VALUES (7,98,1,'2017-06-20 22:34:06','0000-00-00',0.00,'','awesometextfile','txt');
+INSERT INTO `processed_attachments` VALUES (8,100,1,'2017-06-20 22:34:06','0000-00-00',0.00,'','life','png');
 /*!40000 ALTER TABLE `processed_attachments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -156,7 +164,7 @@ CREATE TABLE `processed_emails` (
   `from_address` varchar(100) NOT NULL,
   `parsed` datetime NOT NULL,
   UNIQUE KEY `idindex` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=114 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -165,19 +173,32 @@ CREATE TABLE `processed_emails` (
 
 LOCK TABLES `processed_emails` WRITE;
 /*!40000 ALTER TABLE `processed_emails` DISABLE KEYS */;
-INSERT INTO `processed_emails` VALUES (63,'1An email sent from PHP3','2017-04-01 15:51:18','2017-06-20 20:59:52',1,'','testinvoice2@gmail.com','0000-00-00 00:00:00');
-INSERT INTO `processed_emails` VALUES (64,'2Trei sfaturi pentru a profita la maximum de Gmail','2017-01-13 20:44:39','2017-06-20 20:59:53',0,'','mail-noreply@google.com','0000-00-00 00:00:00');
-INSERT INTO `processed_emails` VALUES (65,'3OrganizeazÄƒ-te mai bine cu ajutorul cÄƒsuÈ›ei Gmail','2017-01-13 20:44:40','2017-06-20 20:59:53',0,'','mail-noreply@google.com','0000-00-00 00:00:00');
-INSERT INTO `processed_emails` VALUES (66,'4Cele mai bune funcÈ›ii Gmail, oriunde te-ai afla','2017-01-13 20:44:39','2017-06-20 20:59:54',0,'','mail-noreply@google.com','0000-00-00 00:00:00');
-INSERT INTO `processed_emails` VALUES (67,'5testt','2017-04-09 15:24:24','2017-06-20 20:59:55',0,'','valentin.lihatchi@gmail.com','0000-00-00 00:00:00');
-INSERT INTO `processed_emails` VALUES (68,'6locked pdf','2017-05-05 05:53:23','2017-06-20 20:59:55',1,'','valentin.lihatchi@gmail.com','0000-00-00 00:00:00');
-INSERT INTO `processed_emails` VALUES (69,'7protecteddoc','2017-05-06 02:00:05','2017-06-20 20:59:56',1,'','valentin.lihatchi@gmail.com','0000-00-00 00:00:00');
-INSERT INTO `processed_emails` VALUES (70,'8An email sent from PHP3','2017-05-20 20:59:48','2017-06-20 20:59:57',1,'','testinvoice2@gmail.com','0000-00-00 00:00:00');
-INSERT INTO `processed_emails` VALUES (71,'9An email sent from PHP3 queued','2017-05-21 13:56:01','2017-06-20 21:00:57',1,'','testinvoice2@gmail.com','0000-00-00 00:00:00');
-INSERT INTO `processed_emails` VALUES (72,'10An email sent from PHP3 queued','2017-05-21 13:56:04','2017-06-20 21:01:37',1,'','testinvoice2@gmail.com','0000-00-00 00:00:00');
-INSERT INTO `processed_emails` VALUES (73,'11An email sent from PHP3 queued','2017-05-21 13:59:11','2017-06-20 21:02:18',1,'','testinvoice2@gmail.com','0000-00-00 00:00:00');
-INSERT INTO `processed_emails` VALUES (74,'12An email sent from PHP3 queued','2017-05-21 14:23:01','2017-06-20 21:02:58',0,'','testinvoice2@gmail.com','0000-00-00 00:00:00');
-INSERT INTO `processed_emails` VALUES (75,'13unu','2017-05-28 01:05:42','2017-06-20 21:03:38',1,'','valentin.lihatchi@gmail.com','0000-00-00 00:00:00');
+INSERT INTO `processed_emails` VALUES (88,'1An email sent from PHP3','2017-04-01 15:51:18','2017-06-20 21:30:39',1,'test','testinvoice2@gmail.com','2017-06-20 22:34:05');
+INSERT INTO `processed_emails` VALUES (89,'2Trei sfaturi pentru a profita la maximum de Gmail','2017-01-13 20:44:39','2017-06-20 21:30:39',0,'','mail-noreply@google.com','0000-00-00 00:00:00');
+INSERT INTO `processed_emails` VALUES (90,'3OrganizeazÄƒ-te mai bine cu ajutorul cÄƒsuÈ›ei Gmail','2017-01-13 20:44:40','2017-06-20 21:30:39',0,'','mail-noreply@google.com','0000-00-00 00:00:00');
+INSERT INTO `processed_emails` VALUES (91,'4Cele mai bune funcÈ›ii Gmail, oriunde te-ai afla','2017-01-13 20:44:39','2017-06-20 21:30:39',0,'','mail-noreply@google.com','0000-00-00 00:00:00');
+INSERT INTO `processed_emails` VALUES (92,'5testt','2017-04-09 15:24:24','2017-06-20 21:30:39',0,'','valentin.lihatchi@gmail.com','0000-00-00 00:00:00');
+INSERT INTO `processed_emails` VALUES (93,'6locked pdf','2017-05-05 05:53:23','2017-06-20 21:30:39',1,'1','valentin.lihatchi@gmail.com','2017-06-20 22:34:05');
+INSERT INTO `processed_emails` VALUES (94,'7protecteddoc','2017-05-06 02:00:05','2017-06-20 21:30:39',1,'1','valentin.lihatchi@gmail.com','2017-06-20 22:34:06');
+INSERT INTO `processed_emails` VALUES (95,'8An email sent from PHP3','2017-05-20 20:59:48','2017-06-20 21:30:40',1,'test','testinvoice2@gmail.com','2017-06-20 22:34:06');
+INSERT INTO `processed_emails` VALUES (96,'9An email sent from PHP3 queued','2017-05-21 13:56:01','2017-06-20 21:30:40',1,'test','testinvoice2@gmail.com','2017-06-20 22:34:06');
+INSERT INTO `processed_emails` VALUES (97,'10An email sent from PHP3 queued','2017-05-21 13:56:04','2017-06-20 21:30:40',1,'test','testinvoice2@gmail.com','2017-06-20 22:34:06');
+INSERT INTO `processed_emails` VALUES (98,'11An email sent from PHP3 queued','2017-05-21 13:59:11','2017-06-20 21:30:40',1,'test','testinvoice2@gmail.com','2017-06-20 22:34:06');
+INSERT INTO `processed_emails` VALUES (99,'12An email sent from PHP3 queued','2017-05-21 14:23:01','2017-06-20 21:30:41',0,'','testinvoice2@gmail.com','0000-00-00 00:00:00');
+INSERT INTO `processed_emails` VALUES (100,'13unu','2017-05-28 01:05:42','2017-06-20 21:30:41',1,'1','valentin.lihatchi@gmail.com','2017-06-20 22:34:06');
+INSERT INTO `processed_emails` VALUES (101,'1An email sent from PHP3','2017-04-01 15:51:18','2017-06-20 21:43:31',1,'','testinvoice2@gmail.com','0000-00-00 00:00:00');
+INSERT INTO `processed_emails` VALUES (102,'2Trei sfaturi pentru a profita la maximum de Gmail','2017-01-13 20:44:39','2017-06-20 21:43:32',0,'','mail-noreply@google.com','0000-00-00 00:00:00');
+INSERT INTO `processed_emails` VALUES (103,'3OrganizeazÄƒ-te mai bine cu ajutorul cÄƒsuÈ›ei Gmail','2017-01-13 20:44:40','2017-06-20 21:43:33',0,'','mail-noreply@google.com','0000-00-00 00:00:00');
+INSERT INTO `processed_emails` VALUES (104,'4Cele mai bune funcÈ›ii Gmail, oriunde te-ai afla','2017-01-13 20:44:39','2017-06-20 21:43:33',0,'','mail-noreply@google.com','0000-00-00 00:00:00');
+INSERT INTO `processed_emails` VALUES (105,'5testt','2017-04-09 15:24:24','2017-06-20 21:43:34',0,'','valentin.lihatchi@gmail.com','0000-00-00 00:00:00');
+INSERT INTO `processed_emails` VALUES (106,'6locked pdf','2017-05-05 05:53:23','2017-06-20 21:43:34',1,'','valentin.lihatchi@gmail.com','0000-00-00 00:00:00');
+INSERT INTO `processed_emails` VALUES (107,'7protecteddoc','2017-05-06 02:00:05','2017-06-20 21:43:35',1,'','valentin.lihatchi@gmail.com','0000-00-00 00:00:00');
+INSERT INTO `processed_emails` VALUES (108,'8An email sent from PHP3','2017-05-20 20:59:48','2017-06-20 21:43:36',1,'','testinvoice2@gmail.com','0000-00-00 00:00:00');
+INSERT INTO `processed_emails` VALUES (109,'9An email sent from PHP3 queued','2017-05-21 13:56:01','2017-06-20 21:43:36',1,'','testinvoice2@gmail.com','0000-00-00 00:00:00');
+INSERT INTO `processed_emails` VALUES (110,'10An email sent from PHP3 queued','2017-05-21 13:56:04','2017-06-20 21:43:37',1,'','testinvoice2@gmail.com','0000-00-00 00:00:00');
+INSERT INTO `processed_emails` VALUES (111,'11An email sent from PHP3 queued','2017-05-21 13:59:11','2017-06-20 21:43:38',1,'','testinvoice2@gmail.com','0000-00-00 00:00:00');
+INSERT INTO `processed_emails` VALUES (112,'12An email sent from PHP3 queued','2017-05-21 14:23:01','2017-06-20 21:43:38',0,'','testinvoice2@gmail.com','0000-00-00 00:00:00');
+INSERT INTO `processed_emails` VALUES (113,'13unu','2017-05-28 01:05:42','2017-06-20 21:43:39',1,'','valentin.lihatchi@gmail.com','0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `processed_emails` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -215,4 +236,4 @@ USE `emails`;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-20 22:05:40
+-- Dump completed on 2017-06-20 22:49:05

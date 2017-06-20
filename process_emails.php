@@ -159,8 +159,17 @@ echo $sql;
 	//	echo "</br>".$r."</br>"	 ; 
 	//	print_r(imap_list($email_object->conn,"{".config::IMAP_HOST."}","*"));
 	//	  $email_object->move($email['index'],"Processed");
+//	$email_object->move(1,"Processed");
+//	array_shift($inbox_array);
+}
+
+foreach ($inbox_array as $email){
+
 	$email_object->move(1,"Processed");
 }
+
+
+
 $conn->close();
 
 ?>
