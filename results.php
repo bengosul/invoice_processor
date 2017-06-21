@@ -1,4 +1,10 @@
 <?php
+session_start();
+if (isset($_SESSION['post_data'])) {
+	$_POST = $_SESSION['post_data'];
+    $_SERVER['REQUEST_METHOD'] = 'POST';
+    unset($_SESSION['post_data']);
+}
 require_once 'functions/return_processed_emails_array.php';
 ?>
 
@@ -22,7 +28,6 @@ require_once 'functions/return_processed_emails_array.php';
 </head>
 
 <body style="text:cyan; bgcolor:black">
-
 <a style="float:left;" href="config_angular/configs.php"> To Config Page</a>
 
 <button id="btnExport" style="float:right;">Export</button></br></br>
@@ -44,8 +49,8 @@ require_once 'functions/return_processed_emails_array.php';
 <table width="100%" class="display" id="datatable">
 	<thead>
 		<tr>
-			<th>Processed</th>
-			<th>Sent</th>
+			<th width = "170">Processed</th>
+			<th width = "170">Sent</th>
 			<th style='display:none;'>Success</th>
 			<th>Partner</th>
 			<th>Amount</th>
@@ -53,6 +58,7 @@ require_once 'functions/return_processed_emails_array.php';
 			<th>InvDate</th>
 			<th>Orig</th>	
 			<th>Txt</th>
+			<th>Repr</th>
 	</tr>
 	</thead>
 	<tbody>
@@ -92,7 +98,16 @@ if ($row_att['invoice_number']) {echo true;} else {echo false;} echo "</td>
 				<td>{$row_att['invoice_date']}</td>
 				<td><a download='{$dlname_orig}' href='{$filename_orig}'>Download</a></td>
 				<td><a href='{$filename_txt}'>Download</a></td>
-			</tr>";
+	         	<td>
+				<form style=\"display:inline\" name=\"f2\" action=\"process_saved_files.php\" method=\"post\" >
+						<input type=\"hidden\" value=\"{$row_att['id_email']}\" name=\"id_email\">
+						<input type=\"hidden\" value=\"{$row_att['id_attachment']}\" name=\"id_attachment\">
+						<input  style=\"width:100%;height:100%;padding-bottom:0px\" id=\"repr\" type=\"submit\" name=\"repr\" value=\"Rerun\" />
+					 </form>
+				</td>
+	
+	
+				</tr>";
 		}
 	}
 ?>

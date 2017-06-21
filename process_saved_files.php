@@ -1,5 +1,5 @@
 <?php
-
+//session_start();
 if(php_sapi_name()!="cli"){
 	echo '<html><body bgcolor="#000000" text="white"><pre>';
 }
@@ -22,14 +22,16 @@ echo "Connected successfully";
 insert_break();
 		
 		//only while testing
-		$sql = "UPDATE `emails`.`processed_emails`
+/*		$sql = "UPDATE `emails`.`processed_emails`
 				SET parsed=0";
 		$res=$conn->query($sql) or die($conn->error);
-
+ */
 
 // Check items that need processing, this query can be manipulated to only process some selection 
 $sql = "SELECT * from emails.processed_emails WHERE parsed = 0 and attachments>0";
-
+if (isset($_POST['repr'])){
+$sql = "SELECT * from emails.processed_emails WHERE id={$_POST['id_email']}";
+}
 if($result = $conn->query($sql))
 {
 	if($result->num_rows==0){echo "No new emails"; insert_break();}
@@ -57,6 +59,9 @@ if($result = $conn->query($sql))
 
 		// Retrieve filenames that need processing;
 		$filepattern= "../store/".sprintf('%06d',$row['id']);
+		if (isset($_POST['repr'])){
+		$filepattern= "../store/".sprintf('%06d',$row['id'])."_".sprintf('%02d',$_POST['id_attachment']);
+		}
 		$filenames=glob("$filepattern*.*");
 		$processedfilename=1;
 		foreach ($filenames as $fn){
@@ -174,4 +179,11 @@ function prepare_pdf($fn){
 	}
 
 //$conn->close();
+
+
+if (isset($_POST['repr'])){
+	session_start();
+	$_SESSION['post_data'] = $_POST;
+	header('Location: results.php');
+}
 ?>

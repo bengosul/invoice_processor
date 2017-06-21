@@ -21,6 +21,7 @@ if (file_exists(__dir__."/".$fileName)){
 foreach ($existingArray as $item){
 	if(password_verify($_POST["pass"],$item["password"]))	{
 		echo "Aliluia\n"; // return 1;
+		setcookie("cook",$item["password"],time()+30);
 		header("Location: "."server_config.php");
 		return;	
 	}
