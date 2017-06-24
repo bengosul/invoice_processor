@@ -27,7 +27,15 @@ require_once 'functions/return_processed_emails_array.php';
 <script src="results.js"></script>
 </head>
 
-<body style="text:cyan; bgcolor:black">
+<!-- <body style="text:cyan; bgcolor:black"> -->
+<body bgcolor="#000000" text="wheat">
+
+<p>
+<?php
+echo "session id:  " .session_id();
+?>
+
+</p>
 <a style="float:left;" href="config_angular/configs.php"> To Config Page</a>
 
 <button id="btnExport" style="float:right;">Export</button></br></br>

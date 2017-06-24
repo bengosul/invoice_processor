@@ -85,7 +85,11 @@ success_selection = "";
 
 $.fn.dataTableExt.afnFiltering.push(
 		function(oSettings, aData, iDataIndex) {
-			if (typeof aData._date == 'undefined') {
+ 			
+		//	$('td', nRow).css('background-color', 'Red');
+			
+			$('td').css('background-color', '#111111');
+ 			if (typeof aData._date == 'undefined') {
 				aData._date = new Date(aData[0]).getTime();
 			}
 

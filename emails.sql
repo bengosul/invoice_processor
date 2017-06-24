@@ -49,6 +49,31 @@ INSERT INTO `accounts` VALUES (2,'TSN');
 UNLOCK TABLES;
 
 --
+-- Table structure for table `logins`
+--
+
+DROP TABLE IF EXISTS `logins`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `logins` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) NOT NULL,
+  `passhash` varchar(300) NOT NULL,
+  `salt2` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `logins`
+--
+
+LOCK TABLES `logins` WRITE;
+/*!40000 ALTER TABLE `logins` DISABLE KEYS */;
+/*!40000 ALTER TABLE `logins` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `match_config`
 --
 
@@ -190,6 +215,32 @@ INSERT INTO `processed_emails` VALUES (126,'13unu','2017-05-28 01:05:42','2017-0
 UNLOCK TABLES;
 
 --
+-- Table structure for table `server_config`
+--
+
+DROP TABLE IF EXISTS `server_config`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `server_config` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `IMAP_HOST` varchar(50) NOT NULL,
+  `IMAP_PORT` int(11) NOT NULL,
+  `IMAP_USER` varchar(50) NOT NULL,
+  `IMAP_PASS_ENCR` varchar(300) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `server_config`
+--
+
+LOCK TABLES `server_config` WRITE;
+/*!40000 ALTER TABLE `server_config` DISABLE KEYS */;
+/*!40000 ALTER TABLE `server_config` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Current Database: `emails`
 --
 
@@ -223,4 +274,4 @@ USE `emails`;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-22  0:28:07
+-- Dump completed on 2017-06-24  1:53:43
