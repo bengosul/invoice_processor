@@ -3,7 +3,7 @@
 function dbQuery($sql)
 {
 	// set PDO for SQLite
-	$db = new PDO("sqlite:emails.sqlite3");
+	$db = new PDO("sqlite:db/emails.sqlite3");
 	// set the params to query
 	$params = ['id', 'account'];
 
@@ -23,6 +23,10 @@ function dbQuery($sql)
 
 	 $objectParams = null;
 	}
+ 	
+//	$objects[]=$db->query($sql);
+
+
 	$db = null;
 
 	return $objects;
