@@ -4,9 +4,10 @@ require_once '../../configs/config.php';
 $servername = config::MYSQL_SERVER;
 $username = config::MYSQL_USER;
 $password = config::MYSQL_PASS;
+$dbname = config::MYSQL_EMAILDB;
 
 // Create connection
-$conn = new mysqli($servername, $username, $password);
+$conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
 if ($conn->connect_error) {
@@ -14,7 +15,7 @@ if ($conn->connect_error) {
 } 
 
 // Check existing rows
-$sql = "SELECT * from emails.accounts";
+$sql = "SELECT * from {$dbname}.accounts";
 $result = $conn->query($sql);
 
 $data = array();

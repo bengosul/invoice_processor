@@ -82,10 +82,12 @@ $storelocation="/store/";
 
 	//	print_r($row);
 		$sql = "SELECT *, a.id as aid
-			from emails.processed_attachments p
-			left join emails.accounts a
+			from {$dbname}.processed_attachments p
+			left join {$dbname}.accounts a
 			on '{$row['partner']}'=a.id
 			WHERE id_email={$row['id']}";
+
+		echo $sql;
 
 		$result_att = $conn->query($sql);
 
@@ -94,7 +96,7 @@ $storelocation="/store/";
 		$filename_orig=$storelocation.sprintf('%06d',$row_att['id_email']).'_'.sprintf('%02d',$row_att['id_attachment']).'_'.$row_att['fn'].".".$row_att['extension'];
 		$filename_txt=$storelocation."temp/".sprintf('%06d',$row_att['id_email']).'_'.sprintf('%02d',$row_att['id_attachment']).'_'.$row_att['fn'].".txt";
 		$dlname_orig=$row_att['accname']."_".sprintf('%06d',$row_att['id_email']).'_'.sprintf('%02d',$row_att['id_attachment']).'_'.$row_att['fn'].".".$row_att['extension'];
-		// var_dump($row);
+//		echo "\nrowdmp: ".	 var_dump($row);
 		echo "<tr>
 				<td>{$row['parsed']}</td>
 				<td>{$row['received']}</td>

@@ -25,5 +25,8 @@ $sql = "SELECT * from processed_emails";
 $result = $conn->query($sql);
 
 // echo "--- printing top 10 existing in db---";
+$numrows=mysqli_num_rows($result);
+
+echo "\n Number of rows = {$numrows}";
 
 ?>

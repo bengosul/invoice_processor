@@ -4,9 +4,11 @@ require_once '../../configs/config.php';
 $servername = config::MYSQL_SERVER;
 $username = config::MYSQL_USER;
 $password = config::MYSQL_PASS;
+$dbname = config::MYSQL_EMAILDB;
+
 
 // Create connection
-$conn = new mysqli($servername, $username, $password);
+$conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
 if ($conn->connect_error) {
@@ -17,7 +19,7 @@ if ($conn->connect_error) {
 $_POST = json_decode(file_get_contents('php://input'), true);
 if(!empty($_POST['id']))
 {
-	$upd_query="DELETE from emails.match_config where id = {$_POST['id']}";
+	$upd_query="DELETE from {$dbname}.match_config where id = {$_POST['id']}";
 }
 else{
 	console.log('un cacat');

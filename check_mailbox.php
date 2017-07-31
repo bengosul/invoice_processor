@@ -7,7 +7,7 @@ echo '<html><body bgcolor="#000000" text="white"><pre>';
 require_once 'functions/general_functions.php';
 require_once '../configs/config.php';
 
-echo "<a href='maintenance.html'>Main Page</a>";
+echo "<a href='index.php'>Main Page</a>";
 insert_break();
 
 // Setup default values
