@@ -1,5 +1,7 @@
 <?php 
 
+require_once 'db_connection_mysqli.php';
+/*
 require_once '../../configs/config.php';
 $servername = config::MYSQL_SERVER;
 $username = config::MYSQL_USER;
@@ -12,7 +14,7 @@ $conn = new mysqli($servername, $username, $password);
 if ($conn->connect_error) {
 	die("Connection failed: " . $conn->connect_error);
 } 
-
+*/
 /*
 // Check existing rows
 $sql = "SELECT * from emails.match_config";
@@ -29,10 +31,10 @@ print json_encode($data);
 $_POST = json_decode(file_get_contents('php://input'), true);
 if(!empty($_POST['id']))
 {
-	$upd_query="UPDATE emails.match_config set config_name='{$_POST['config_name']}', partner='{$_POST['partner']}' where id = {$_POST['id']}";
+	$upd_query="UPDATE {$dbname}.match_config set config_name='{$_POST['config_name']}', partner='{$_POST['partner']}' where id = {$_POST['id']}";
 }
 else{
-	$upd_query="INSERT emails.match_config (config_name) VALUES('{$_POST['config_name']}')";
+	$upd_query="INSERT {$dbname}.match_config (config_name) VALUES('{$_POST['config_name']}')";
 
 }
 

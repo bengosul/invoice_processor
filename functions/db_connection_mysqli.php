@@ -1,7 +1,8 @@
 <?php 
 
-/*
-require_once '../../configs/config.php';
+require_once __DIR__.'/../../configs/config.php';
+//require_once '../../configs/config.php';
+
 $servername = config::MYSQL_SERVER;
 $username = config::MYSQL_USER;
 $password = config::MYSQL_PASS;
@@ -14,19 +15,5 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
 	die("Connection failed: " . $conn->connect_error);
 } 
- */
-
-require_once 'db_connection_mysqli.php';
-
-// Check existing rows
-$sql = "SELECT * from {$dbname}.match_config";
-$result = $conn->query($sql);
-
-$data = array();
-
-while ($row = mysqli_fetch_array($result)) {
-	  $data[] = $row;
-}
-    print json_encode($data);
 
 ?>

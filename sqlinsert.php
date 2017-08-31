@@ -1,6 +1,8 @@
 <?php
 
-require_once '../classes/config.php';
+require_once 'functions/db_connection_mysqli.php';
+
+/*require_once '../classes/config.php';
 
 $servername = config::MYSQL_SERVER;
 $username = config::MYSQL_USER;
@@ -13,10 +15,11 @@ $conn = new mysqli($servername, $username, $password);
 if ($conn->connect_error) {
 	die("Connection failed: " . $conn->connect_error);
 } 
+*/
 echo "Connected successfully<br>";
 
 // Check existing rows
-$sql = "SELECT * from emails.processed_emails LIMIT 10";
+$sql = "SELECT * from {$dbname}.processed_emails LIMIT 10";
 $result = $conn->query($sql);
 
 while($row = $result->fetch_assoc()) {
@@ -24,7 +27,7 @@ while($row = $result->fetch_assoc()) {
 	//		        echo "id: " . $row["id"]. " Subject: " . $row["subject"]. "<br>";
 }
 
-$sql = "TRUNCATE TABLE emails.processed_emails";
+$sql = "TRUNCATE TABLE {$dbname}.processed_emails";
 $result = $conn->query($sql);
 
 // --------------------------------------------------------------
@@ -58,7 +61,7 @@ print_r($value["structure"]);
 	$subject= iconv_mime_decode($subj,0,"UTF-8");
 	$subject=mysqli_real_escape_string($conn, $subject);
 
-	$sql = "INSERT into `emails`.`processed_emails`(subject, received, attachments, partner, from_address, invoice_date, invoice_amount, invoice_number)
+	$sql = "INSERT into `{$dbname}`.`processed_emails`(subject, received, attachments, partner, from_address, invoice_date, invoice_amount, invoice_number)
 		VALUES ('$subject','$received','$attachments','$partner','$from_address','$invoice_date','$invoice_amount','$invoice_number')";
 
 //	echo $sql;

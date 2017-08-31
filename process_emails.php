@@ -5,6 +5,8 @@ echo '<html><body bgcolor="#000000" text="white"><pre>';
 }
 
 require_once 'functions/general_functions.php';
+require_once 'functions/db_connection_mysqli.php';
+/*
 require_once '../configs/config.php';
 $servername = config::MYSQL_SERVER;
 $username = config::MYSQL_USER;
@@ -17,11 +19,13 @@ $conn = new mysqli($servername, $username, $password);
 if ($conn->connect_error) {
 	die("Connection failed: " . $conn->connect_error);
 } 
+*/
+
 echo "Connected successfully";
 insert_break();
 
 // Check existing rows
-$sql = "SELECT * from emails.processed_emails LIMIT 10";
+$sql = "SELECT * from {$dbname}.processed_emails LIMIT 10";
 $result = $conn->query($sql);
 
 echo "--- printing top 10 existing in db---";
@@ -55,7 +59,7 @@ require_once 'inbox_class.php';
 $email_object = New Email_reader();
 $inbox_array=$email_object->output();
 echo "Found ".count($inbox_array). " new emails"; insert_break();
-echo "<a href='maintenance.html'>Main Page</a>";
+echo "<a href='index.php'>Main Page</a>";
 
 foreach ($inbox_array as $email){
 	insert_break();	echo "adding"; insert_break();
@@ -72,7 +76,7 @@ foreach ($inbox_array as $email){
 	$count=0;
 
 	//Insert email data to retrieve index
-	$sql = "INSERT into `emails`.`processed_emails`(subject, received, attachments, partner, from_address,parsed)
+	$sql = "INSERT into `{$dbname}`.`processed_emails`(subject, received, attachments, partner, from_address,parsed)
 		VALUES ('$subject','$received','$attachments','$partner','$from_address','$invoice_date')";
 
 echo $sql;
@@ -148,7 +152,7 @@ echo $sql;
 	//print_r($attachments);
 	$attachments=$count;
 	//Insert email data to retrieve index
-	$sql = "UPDATE `emails`.`processed_emails`
+	$sql = "UPDATE `{$dbname}`.`processed_emails`
 		SET attachments = $attachments
 		WHERE id = $conn->insert_id";
 	$result=$conn->query($sql) or die($conn->error);

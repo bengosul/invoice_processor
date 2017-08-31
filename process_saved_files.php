@@ -4,9 +4,10 @@ if(php_sapi_name()!="cli"){
 	echo '<html><body bgcolor="#000000" text="white"><pre>';
 }
 
-require_once '../configs/config.php';
+//require_once '../configs/config.php';
 require_once 'functions/general_functions.php';
-
+require_once 'functions/db_connection_mysqli.php';
+/*
 $servername = config::MYSQL_SERVER;
 $username = config::MYSQL_USER;
 $password = config::MYSQL_PASS;
@@ -18,6 +19,8 @@ $conn = new mysqli($servername, $username, $password);
 if ($conn->connect_error) {
 	die("Connection failed: " . $conn->connect_error);
 } 
+*/
+
 echo "Connected successfully";
 insert_break();
 		
@@ -28,9 +31,9 @@ insert_break();
  */
 
 // Check items that need processing, this query can be manipulated to only process some selection 
-$sql = "SELECT * from emails.processed_emails WHERE parsed = 0 and attachments>0";
+$sql = "SELECT * from {$dbname}.processed_emails WHERE parsed = 0 and attachments>0";
 if (isset($_POST['repr'])){
-$sql = "SELECT * from emails.processed_emails WHERE id={$_POST['id_email']}";
+$sql = "SELECT * from {$dbname}.processed_emails WHERE id={$_POST['id_email']}";
 }
 if($result = $conn->query($sql))
 {
@@ -42,7 +45,7 @@ if($result = $conn->query($sql))
 		$client_config=retrieve_config($row['from_address'],$conn);
 
 		//mark email as processed - ! not good when one attachment is parsed and the other throws an error
-		$sql = "UPDATE `emails`.`processed_emails`
+		$sql = "UPDATE `{$dbname}`.`processed_emails`
 				SET parsed =CURRENT_TIMESTAMP, partner = '".$client_config['partner']."'
 				WHERE id =".$row['id'];
 		echo "line 79 sql: ". $sql;
@@ -109,13 +112,13 @@ if($result = $conn->query($sql))
 							WHERE id =".$row['id'];
 				//echo "line 79 sql: ". $sql;
 */
-				$sql = "DELETE FROM `emails`.`processed_attachments`
+				$sql = "DELETE FROM `{$dbname}`.`processed_attachments`
 						WHERE id_email =".$row['id']."
 						AND id_attachment =".$processedfilename;
 			
 				$res=$conn->query($sql) or die($conn->error);
 
-				$sql = "INSERT `emails`.`processed_attachments` (id_email, id_attachment, invoice_number, fn, extension)
+				$sql = "INSERT `{$dbname}`.`processed_attachments` (id_email, id_attachment, invoice_number, fn, extension)
 						VALUES (".$row['id'].",".$processedfilename.",'$invoice_number','$origStripFilename','$extension')";
 			
 				$res=$conn->query($sql) or die($conn->error);
@@ -150,7 +153,7 @@ function retrieve_config($from_address,$connection){
 			"inv_no_str" => ""
 			);
 
-	$sql = "SELECT * from emails.match_config WHERE email ='$from_address'";
+	$sql = "SELECT * from {$dbname}.match_config WHERE email ='$from_address'";
 	//	echo $sql;
 	insert_break();
 	if($result_config = $connection->query($sql))
