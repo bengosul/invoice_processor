@@ -22,7 +22,8 @@ insert_break();
 
 // Check existing rows
 $sql = "SELECT * from processed_emails";
-$result = $conn->query($sql);
+$result = $conn->query($sql) or die($conn->error);
+
 
 // echo "--- printing top 10 existing in db---";
 $numrows=mysqli_num_rows($result);
