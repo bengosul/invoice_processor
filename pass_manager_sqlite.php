@@ -2,7 +2,7 @@
 //check that arrival here was with post
 if (!isset($_POST["password"])) {
 //	echo "no post, redirecting back";
-die("How did you get here?");
+	die("How did you get here?");
 //	header("Location: "."login.php");
 }
 
@@ -26,11 +26,14 @@ echo "<p>ITEM: ".$result["passhash"];
 
 //check if matching
 if(password_verify($_POST["password"],$result["passhash"]))	{
-		//if found, set session with a new hash of the user's pass which is also used to decrypt the imap password
+	//if found, set session with a new hash of the user's pass which is also used to decrypt the imap password
+		session_regenerate_id();
 		$hash2 = password_hash($_POST['password'], PASSWORD_DEFAULT, [ "cost" => 10, "salt"=> $result["salt2"] ]);
 		$_SESSION["hash2"]=$hash2;
 		$_SESSION["encr_pass"]=$result["imap_pass_enc"];
 		$_SESSION["username"]=$result["username"];
+		$_SESSION["agent"]=$_SERVER['HTTP_USER_AGENT'];
+		$_SESSION["init_time"]=date("m/d/Y h:i:s");
 		header("Location: "."server_config.php");
 	return;	
 }

@@ -5,6 +5,7 @@
 session_start();
 // var_dump($_SESSION);
 if (isset($_POST['logout'])) {
+	session_regenerate_id();
 	session_destroy();
 	header("Location: "."account.php");
 	exit;

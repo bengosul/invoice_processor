@@ -1,10 +1,25 @@
 <html>
 <body bgcolor="#000000" text="#8888FF">
 <form action="server_config.php" method = "post"> 
+
 <?php
-require_once "../configs/config.php";
+
+//validate session
 session_start();
+
 isset($_SESSION['hash2']) ?: die ("Not logged in");
+
+if(!$_SERVER['HTTP_USER_AGENT']==$_SESSION['agent'])
+{
+	session_unset();
+	die ("Hijack");
+}  
+ 
+
+//var_dump($_SESSION);
+//echo date("m/d/Y h:i:s");
+//retrieve info
+require_once "../configs/config.php";
 
 $pass= $_SESSION['hash2'];
 $method = "AES-256-ECB";
