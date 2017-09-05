@@ -3,6 +3,7 @@ require_once '../functions/general_functions.php';
 session_start();
 validate_session('Invalid session');
 ?>
+<!doctype html>
 <html ng-app="app">
   <head>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.js"></script>
