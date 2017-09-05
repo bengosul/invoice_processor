@@ -4,9 +4,15 @@
 
 <?php
 
-//validate session
+require_once "functions/general_functions.php";
+
 session_start();
 
+//die (var_dump($_SESSION));
+
+validate_session('Invalid session');
+
+//process mailserver pass
 if(isset($_COOKIE["hash2"])){
 	echo "<p>cookie: ".$_COOKIE["hash2"]."</p>";
 	echo "init_time: ".$_SESSION['init_time'].'</br></br>';
@@ -25,7 +31,7 @@ if(isset($_COOKIE["hash2"])){
 //	echo $data_init.'</br>';
 }else{
 	session_destroy();
-	die ("No cookie? not logged in");
+	die ("No cookie? not logged in".'</br><a href="index.php">Main</a></br>');
 }
 
 //isset($_SESSION['hash2']) ?: die ("Not logged in");
@@ -42,10 +48,14 @@ if(!$_SERVER['HTTP_USER_AGENT']==$_SESSION['agent'])
 require_once "../configs/config.php";
 
 //$pass= $_SESSION['hash2'];
-$pass= $_COOKIE['hash2'];
+/*$pass= $_COOKIE['hash2'];
 $method = "AES-256-ECB";
 
 $decrypted_imap_pass=openssl_decrypt($_SESSION['encr_pass'], $method, $pass);
+ */
+
+$decrypted_imap_pass=ImapCred();
+
 
 /*
 if(isset($_COOKIE["cook"])){

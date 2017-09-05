@@ -215,7 +215,10 @@ CREATE TABLE `server_config` (
   `IMAP_PORT` int(11) NOT NULL,
   `IMAP_USER` varchar(50) NOT NULL,
   `IMAP_PASS_ENCR` varchar(300) NOT NULL,
-  PRIMARY KEY (`id`)
+  `id_login` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_loginid` (`id_login`),
+  CONSTRAINT `fk_loginid` FOREIGN KEY (`id_login`) REFERENCES `logins` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -262,4 +265,4 @@ USE `emails`;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-09-05  7:38:22
+-- Dump completed on 2017-09-05 22:13:48

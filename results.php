@@ -1,5 +1,8 @@
 <?php
 session_start();
+require_once 'functions/general_functions.php';
+validate_session('Invalid session');
+
 if (isset($_SESSION['post_data'])) {
 	$_POST = $_SESSION['post_data'];
     $_SERVER['REQUEST_METHOD'] = 'POST';

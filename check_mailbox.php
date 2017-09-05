@@ -5,6 +5,8 @@ echo '<html><body bgcolor="#000000" text="white"><pre>';
 }
 
 require_once 'functions/general_functions.php';
+session_start();
+validate_session('Invalid session');
 require_once '../configs/config.php';
 
 echo "<a href='index.php'>Main Page</a>";

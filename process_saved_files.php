@@ -6,6 +6,8 @@ if(php_sapi_name()!="cli"){
 
 //require_once '../configs/config.php';
 require_once 'functions/general_functions.php';
+session_start();
+validate_session('Invalid session');
 require_once 'functions/db_connection_mysqli.php';
 /*
 $servername = config::MYSQL_SERVER;

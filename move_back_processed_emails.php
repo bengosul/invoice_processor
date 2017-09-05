@@ -5,6 +5,8 @@ echo '<html><body bgcolor="#000000" text="white"><pre>';
 }
 
 require_once 'functions/general_functions.php';
+session_start();
+validate_session('Invalid session');
 require_once '../configs/config.php';
 $servername = config::MYSQL_SERVER;
 $username = config::MYSQL_USER;
