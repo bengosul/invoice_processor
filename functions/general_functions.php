@@ -38,7 +38,9 @@ function invalidate_session($message=null){
 }
 
 function validate_session($message=null){
-	if (valid_session()==true){return true; }
+	if (valid_session()==true){
+		//echo "<p>Logged in as: {$_SESSION['username']}</p></br>";
+		return true; }
 	else{invalidate_session($message);}
 }
 
