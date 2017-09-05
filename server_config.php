@@ -11,7 +11,7 @@ session_start();
 //die (var_dump($_SESSION));
 
 validate_session('Invalid session');
-
+/*
 //process mailserver pass
 if(isset($_COOKIE["hash2"])){
 	echo "<p>cookie: ".$_COOKIE["hash2"]."</p>";
@@ -24,7 +24,7 @@ if(isset($_COOKIE["hash2"])){
 		echo 'time: '.time().'</br>';
 		echo 'time_conv: '.date("m/d/Y H:i:s",time());
 		session_destroy();
-		die("SESSION EXPIRED </br><a href=\"index.php\">Main</a></br>");
+		die("SESSION EXPIRED </br><a href=\"/account.php\">Account</a></br>");
 	}
 //	echo date("m/d/Y h:i:s", $data_init);
 //	echo time().'</br>';
@@ -45,6 +45,8 @@ if(!$_SERVER['HTTP_USER_AGENT']==$_SESSION['agent'])
 //var_dump($_SESSION);
 //echo date("m/d/Y h:i:s");
 //retrieve info
+ */
+
 require_once "../configs/config.php";
 
 //$pass= $_SESSION['hash2'];

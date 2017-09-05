@@ -7,6 +7,7 @@ echo $brstr;
 
 
 function ImapCred(){
+	isset($_COOKIE['hash2']) ?: invalidate_session('Suspicious activity');
 	$pass= $_COOKIE['hash2'];
 	$method = "AES-256-ECB";
 	$decrypted_imap_pass=openssl_decrypt($_SESSION['encr_pass'], $method, $pass);
