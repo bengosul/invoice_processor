@@ -79,8 +79,10 @@ echo "session id:  " .session_id();
 
 $storelocation="/store/";
 
-	while($row = $result->fetch_assoc()) {
-
+//MYSQLI
+//	while($row = $result->fetch_assoc()) {
+//PDO with MySQL
+	while($row = $result->fetch(PDO::FETCH_ASSOC)) {
 		//		        echo "id: " . $row["id"]. " Subject: " . $row["subject"]. "<br>";
 
 	//	print_r($row);
@@ -93,8 +95,11 @@ $storelocation="/store/";
 		echo $sql;
 
 		$result_att = $conn->query($sql);
-
-	while($row_att=$result_att->fetch_assoc()){
+		
+//MYSQLI
+//	while($row_att=$result_att->fetch_assoc()){
+//PDO with MySQL	
+	while($row_att=$result_att->fetch(PDO::FETCH_ASSOC)) {
 
 		$filename_orig=$storelocation.sprintf('%06d',$row_att['id_email']).'_'.sprintf('%02d',$row_att['id_attachment']).'_'.$row_att['fn'].".".$row_att['extension'];
 		$filename_txt=$storelocation."temp/".sprintf('%06d',$row_att['id_email']).'_'.sprintf('%02d',$row_att['id_attachment']).'_'.$row_att['fn'].".txt";

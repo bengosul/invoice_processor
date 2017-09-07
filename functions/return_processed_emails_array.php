@@ -19,7 +19,8 @@ if ($conn->connect_error) {
 } 
  */
 
-require_once 'db_connection_mysqli.php';
+//require_once 'db_connection_mysqli.php';
+require_once 'db_connection_pdo.php';
 
 echo $servername.":". $username.":". $password.":". $dbname ;
 echo "Connected successfully";
@@ -31,7 +32,11 @@ $result = $conn->query($sql) or die($conn->error);
 
 
 // echo "--- printing top 10 existing in db---";
-$numrows=mysqli_num_rows($result);
+
+//mysqli
+//$numrows=mysqli_num_rows($result);
+//PDO
+$numrows = $conn->query("SELECT COUNT(*) FROM  {$dbname}.processed_emails")->fetchColumn();
 
 echo "\n Number of rows = {$numrows}";
 
