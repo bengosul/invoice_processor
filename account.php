@@ -40,7 +40,7 @@ elseif(!isset($_SESSION["hash2"])){
 	echo isset($_SESSION["message"]) ? "<p style='color:red;'>{$_SESSION["message"]}</p><br>" : null ;
 	unset($_SESSION['message']);
 
-	echo "<form action = 'pass_manager_sqlite_cookie.php' method='post'>\n";
+	echo "<form action = 'pass_manager_pdo_cookie.php' method='post'>\n";
 	echo "Username: <input type='text' name='username' value='admin'></br>\n";
 	echo "Password: <input type='password' name='password' autofocus></br>\n";
 	echo "<input type='submit' value = 'Login'>\n";

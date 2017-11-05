@@ -8,10 +8,16 @@ if (!isset($_POST["password"])) {
 
 session_start();
 
-//sqlite connection
-$db = new SQLite3('db/emails.sqlite3');
-$sql = "select * from logins where username='".$_POST['username']."' limit 1";
-$result = $db->query($sql)->fetchArray(SQLITE3_ASSOC) ;
+//PDO mysql
+require_once 'functions/db_connection_pdo.php';
+
+echo $servername.":". $username.":". $password.":". $dbname ;
+echo "Connected successfully";
+
+$sql = "select * from {$dbname}.logins where username='".$_POST['username']."' limit 1";
+$result = $conn->query($sql) or die($conn->error);
+$result = $result->fetch();
+
 
 //check if username exists
 if(!$result){
@@ -19,14 +25,11 @@ if(!$result){
 	header("Location: "."account.php");
 	exit;
 }
-
+// echo "<pre>";
 /*
 echo "<p>POST: ".$_POST["password"];
 echo "<p>ITEM: ".$result["passhash"];
  */
-
-
-die ($_POST["password"].' ::: '.$result["passhash"]);
 
 //check if matching
 if(password_verify($_POST["password"],$result["passhash"]))	{
@@ -46,6 +49,7 @@ if(password_verify($_POST["password"],$result["passhash"]))	{
 		header("Location: "."server_config.php");
 	return;	
 }
+
 
 //redirect back if not found
 $_SESSION["message"]="Login failed";
