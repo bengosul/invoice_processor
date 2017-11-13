@@ -1,6 +1,7 @@
 <?php
 
-$texttoencrypt="parola";
+//$texttoencrypt="parola";
+$texttoencrypt=$argv[1];
 
 $salt2='saremarededouazeciplus';
 $hash2 = password_hash($texttoencrypt, PASSWORD_DEFAULT, [ "cost" => 10, "salt"=> $salt2 ]);

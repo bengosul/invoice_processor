@@ -48,7 +48,7 @@ $result= $conn->query($upd_query) or die(mysqli_error($conn)) ;
 // echo json_encode($result->fetchAll());
 var_dump($result);
 if (!mysqli_affected_rows($conn)) {
-echo "<html><body><script type='text/javascript'>".mysqli_error($conn).$result."alert('fuck thiss');</script></body></html>";
+	echo "<html><body><script type='text/javascript'>".mysqli_error($conn).$result."alert('fuck thiss');</script></body></html>";
 }
 
 

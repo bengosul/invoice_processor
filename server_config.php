@@ -65,9 +65,12 @@ echo "<p>cookie: ".$_COOKIE["cook"]."</p>";
 }
  */
 
-echo "IMAP_HOST: <input type='text' value=".Config::IMAP_HOST."></br>";
-echo "IMAP_PORT: <input type='text' value=".Config::IMAP_PORT."></br>";
-echo "SMTP_USER: <input type='text' value=".Config::SMTP_USER."></br>";
+//echo "IMAP_HOST: <input type='text' value=".Config::IMAP_HOST."></br>";
+echo "IMAP_HOST: <input type='text' value=".$_SESSION['IMAP_HOST']."></br>";
+//echo "IMAP_PORT: <input type='text' value=".Config::IMAP_PORT."></br>";
+echo "IMAP_PORT: <input type='text' value=".$_SESSION['IMAP_PORT']."></br>";
+//echo "SMTP_USER: <input type='text' value=".Config::SMTP_USER."></br>";
+echo "IMAP_USER: <input type='text' value=".$_SESSION['IMAP_USER']."></br>";
 echo "SMTP_PASSWORD: <input type='text' value='{$decrypted_imap_pass}'></br>";
 
 echo "<input type='submit' name='subname' value='update'></br>";

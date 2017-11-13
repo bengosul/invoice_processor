@@ -16,7 +16,7 @@ echo "Connected successfully";
 
 $sql = "select * from {$dbname}.logins where username='".$_POST['username']."' limit 1";
 $result = $conn->query($sql) or die($conn->error);
-$result = $result->fetch();
+$result = $result->fetch(PDO::FETCH_ASSOC);
 
 
 //check if username exists
@@ -40,7 +40,21 @@ if(password_verify($_POST["password"],$result["passhash"]))	{
 //		$_SESSION["hash2"]=$hash2;
 		setcookie("hash2",$hash2,time()+60*60*2);
 
-		$_SESSION["encr_pass"]=$result["imap_pass_enc"];
+		$sql ="SELECT l.id, l.username, l.passhash, l.salt2, 
+					sc.IMAP_HOST, sc.IMAP_PORT, sc.IMAP_USER, sc.imap_pass_encr 
+				FROM {$dbname}.logins l right join {$dbname}.server_config sc 
+				ON l.id=sc.id_login
+				WHERE main = 1
+				AND username='".$_POST['username']."'
+			";
+			$result = $conn->query($sql) or die($conn->error);
+			$result = $result->fetch(PDO::FETCH_ASSOC);
+
+	
+		$_SESSION["IMAP_HOST"]=$result["IMAP_HOST"];
+		$_SESSION["IMAP_PORT"]=$result["IMAP_PORT"];
+		$_SESSION["IMAP_USER"]=$result["IMAP_USER"];
+		$_SESSION["encr_pass"]=$result["imap_pass_encr"];
 		$_SESSION["username"]=$result["username"];
 		$_SESSION["agent"]=$_SERVER['HTTP_USER_AGENT'];
 		$_SESSION["init_time"]=date("m/d/Y H:i:s");
