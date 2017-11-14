@@ -15,7 +15,7 @@ function ImapCred(){
 }
 
 function valid_session(){
-	if($_SESSION['init_time'] && strtotime($_SESSION['init_time'])>time()-60*60*2 && $_SERVER['HTTP_USER_AGENT']==$_SESSION['agent']){		
+	if(array_key_exists('init_time', $_SESSION) && strtotime($_SESSION['init_time'])>time()-60*60*2 && $_SERVER['HTTP_USER_AGENT']==$_SESSION['agent']){		
 		if(strtotime($_SESSION['refresh_time'])<time()-20) {	
 			session_regenerate_id();
 			$_SESSION["refresh_time"]=date("m/d/Y H:i:s");

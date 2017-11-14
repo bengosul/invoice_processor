@@ -20,6 +20,9 @@
 </br>
 <a href="account.php">Account</a></br>
 
-
+<?php 
+//session_start();
+//var_dump($_SESSION);
+?>
 </body>
 </html>
