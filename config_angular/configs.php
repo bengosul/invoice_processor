@@ -6,7 +6,7 @@ validate_session('Invalid session');
 <!doctype html>
 <html ng-app="app">
   <head>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.js"></script> 
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-touch.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-animate.js"></script>
     <script src="http://ui-grid.info/docs/grunt-scripts/csv.js"></script>
@@ -30,7 +30,7 @@ validate_session('Invalid session');
 </div>
 
 
-</br><a href="../index.php">Results Page</a></br>
+</br><a href="../index.php">Main Page</a></br>
 
     <script src="configs.js"></script>
   </body>

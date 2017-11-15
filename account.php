@@ -1,6 +1,5 @@
 <html>
-<body>
-
+<body bgcolor="#001155" text="white">
 <?php
 session_start();
 require_once "functions/general_functions.php";
@@ -39,7 +38,9 @@ elseif(!isset($_SESSION["hash2"])){
 }
 else {echo 'wtf';}
 
+
 ?>
 <a href="index.php">Main</a></br>
+
 </body>
 </html>

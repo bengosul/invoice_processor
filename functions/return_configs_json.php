@@ -16,7 +16,9 @@ if ($conn->connect_error) {
 } 
  */
 
-require_once 'db_connection_mysqli.php';
+//require_once 'db_connection_mysqli.php';
+require_once 'db_connection_pdo.php';
+
 
 // Check existing rows
 $sql = "SELECT * from {$dbname}.match_config";
@@ -24,7 +26,8 @@ $result = $conn->query($sql);
 
 $data = array();
 
-while ($row = mysqli_fetch_array($result)) {
+//while ($row = mysqli_fetch_array($result)) {
+while($row=$result->fetch(PDO::FETCH_ASSOC)) {
 	  $data[] = $row;
 }
     print json_encode($data);

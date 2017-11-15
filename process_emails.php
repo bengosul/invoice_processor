@@ -7,7 +7,8 @@ echo '<html><body bgcolor="#000000" text="white"><pre>';
 require_once 'functions/general_functions.php';
 session_start();
 validate_session('Invalid session');
-require_once 'functions/db_connection_mysqli.php';
+//require_once 'functions/db_connection_mysqli.php';
+require_once 'functions/db_connection_pdo.php';
 
 /*
 require_once '../configs/config.php';
@@ -33,7 +34,8 @@ $result = $conn->query($sql);
 
 echo "--- printing top 10 existing in db---";
 insert_break();
-while($row = $result->fetch_assoc()) {
+while($row = $result->fetch(PDO::FETCH_ASSOC)) {    
+    
 	echo $row['id'].var_dump($row['subject'])."<hr />";
 	//		        echo "id: " . $row["id"]. " Subject: " . $row["subject"]. "<br>";
 }
@@ -75,7 +77,7 @@ foreach ($inbox_array as $email){
 
 	// print_r($value["structure"]);
 	$subject= iconv_mime_decode($subj,0,"UTF-8");
-	$subject=mysqli_real_escape_string($conn, $subject);
+//	$subject=mysqli_real_escape_string($conn, $subject);
 	$count=0;
 
 	//Insert email data to retrieve index
@@ -90,7 +92,7 @@ echo $sql;
 	if($result) echo "</br> insert Success </br>";
 
 	if (gettype($result)=="object"){
-		$result->close();
+		$result=null;
 	}
 
 	// check for attachments
@@ -144,9 +146,11 @@ echo $sql;
 					$attachments[$i]['attachment'] = quoted_printable_decode($attachments[$i]['attachment']);
 				}
 
-				echo	"</br>insertid: ".$conn->insert_id;
+
+
+				echo	"</br>insertid: ".$conn->lastInsertId();
 //				print_r($attachments[$i]);
-				file_put_contents("../store/".sprintf('%06d',$conn->insert_id)."_".sprintf('%02d',$count)."_".$attachments[$i]['filename'], $attachments[$i]['attachment']);
+				file_put_contents("../store/".sprintf('%06d',$conn->lastInsertId())."_".sprintf('%02d',$count)."_".$attachments[$i]['filename'], $attachments[$i]['attachment']);
 				// echo	mkdir("/store/xxx2");	
 			}
 		}
@@ -157,12 +161,14 @@ echo $sql;
 	//Insert email data to retrieve index
 	$sql = "UPDATE `{$dbname}`.`processed_emails`
 		SET attachments = $attachments
-		WHERE id = $conn->insert_id";
-	$result=$conn->query($sql) or die($conn->error);
+		WHERE id = {$conn->lastInsertId()}";
 
+	
+//	$result=$conn->query($sql) or die(print_r($conn->errorInfo()));
+	$result=$conn->query($sql) or die($sql);
 
 	// move the email to Processed folder on the server
-	$r=@imap_createmailbox($email_object->conn, imap_utf7_encode("{".config::IMAP_HOST."}Processed"));
+	$r=@imap_createmailbox($email_object->conn, imap_utf7_encode("{".$_SESSION['IMAP_HOST']."}Processed"));
 	//	echo "</br>".$r."</br>"	 ; 
 	//	print_r(imap_list($email_object->conn,"{".config::IMAP_HOST."}","*"));
 	//	  $email_object->move($email['index'],"Processed");
@@ -177,6 +183,6 @@ foreach ($inbox_array as $email){
 
 
 
-$conn->close();
-
+//$conn->close();
+$conn=null;
 ?>

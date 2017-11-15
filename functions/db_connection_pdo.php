@@ -1,7 +1,8 @@
 <?php 
-
-// require_once __DIR__.'/general_functions.php';
+session_id() ?: session_start();
+require_once __DIR__.'/general_functions.php';
 require_once __DIR__.'/../config.php';
+/*
 //require_once '../../configs/config.php';
 function GetMysqlCredentials($srv='encr_mysql_pass'){
 	// supposed to prevent cookie hijack
@@ -12,8 +13,8 @@ function GetMysqlCredentials($srv='encr_mysql_pass'){
 	$decrypted_pass=openssl_decrypt($_SESSION[$srv], $method, $pass);
 	return $decrypted_pass;
 }
-
-$decrypted_mysql_pass=GetMysqlCredentials('encr_mysql_pass');
+*/
+$decrypted_mysql_pass=GetCredentials('encr_mysql_pass');
 $password = $decrypted_mysql_pass;
 
 $servername = config::MYSQL_SERVER;

@@ -1,6 +1,6 @@
 var providers=[];
 var providersHash={};
-
+/*
 //get provider data and compile into two useful things for the dropdown
 let url = '../functions/return_accounts_json.php';
 fetch(url)
@@ -16,7 +16,7 @@ fetch(url)
 			}
      })
     .catch(err => console.error(err));
-
+*/
 
 /////////////////////////////////////////////////////////
 var app = angular.module('app', ['ngTouch', 'ui.grid', 'ui.grid.edit']);
@@ -96,6 +96,26 @@ $http.get('../functions/return_configs_json.php')
 .success(function(data) {
 	$scope.gridOptions.data = data;
 });
+
+
+
+//get provider data and compile into two useful things for the dropdown
+$http({
+      method: 'GET',
+      url: '../functions/return_accounts_json.php'
+   }).then(function (success){
+        providerJson = success;
+
+		    for(x in providerJson['data']){
+				providers.push({
+					id : providerJson['data'][x]['id'],
+					accname : providerJson['data'][x]['accname']
+				});
+				providersHash[providerJson['data'][x]['id']]= providerJson['data'][x]['accname'];  
+            }
+  
+   },function (error){
+   });
 
 
 $scope.gridOptions.onRegisterApi = function(gridApi) {
