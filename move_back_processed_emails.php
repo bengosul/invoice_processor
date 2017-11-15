@@ -7,10 +7,11 @@ echo '<html><body bgcolor="#000000" text="white"><pre>';
 require_once 'functions/general_functions.php';
 session_start();
 validate_session('Invalid session');
-require_once '../configs/config.php';
+require_once 'config.php';
 $servername = config::MYSQL_SERVER;
 $username = config::MYSQL_USER;
-$password = config::MYSQL_PASS;
+//$password = config::MYSQL_PASS;
+$password = $_SESSION['encr_pass'];
 
 // Begin reading emails	
 require_once 'inbox_class.php';
@@ -20,7 +21,7 @@ $email_object = New Email_reader();
 $email_object->change_folder('Processed');
 $inbox_array=$email_object->output();
 echo "Found ".count($inbox_array). " new emails"; insert_break();
-echo "<a href='maintenance.html'>Main Page</a>";
+echo "<a href='index.php'>Main Page</a>";
 
 foreach ($inbox_array as $email){
 

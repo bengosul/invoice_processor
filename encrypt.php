@@ -17,6 +17,8 @@ echo $encrypted."\n";
 
 $decrypted=openssl_decrypt($encrypted, $method, $pass);
 
+$decrypted=openssl_decrypt('rzM3QGpWO9h9E2zuYpkLOA==', $method, $pass);
+
 echo $decrypted."\n";
 
 ?>

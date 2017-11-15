@@ -1,6 +1,8 @@
 <?php 
 
-require_once 'db_connection_mysqli.php';
+session_start();
+require_once 'db_connection_pdo.php';
+//require_once 'db_connection_mysqli.php';
 /*
 require_once '../../configs/config.php';
 $servername = config::MYSQL_SERVER;
@@ -40,10 +42,8 @@ else{
 
 
 echo $upd_query;
-
-
+/*
 $result= $conn->query($upd_query) or die(mysqli_error($conn)) ;
-
 
 // echo json_encode($result->fetchAll());
 var_dump($result);
@@ -51,7 +51,17 @@ if (!mysqli_affected_rows($conn)) {
 	echo "<html><body><script type='text/javascript'>".mysqli_error($conn).$result."alert('fuck thiss');</script></body></html>";
 }
 
+*/
 
+$result = $conn->prepare($upd_query);
+$result->execute();
 
+/* Return number of rows that were deleted */
+print("Return number of rows that were deleted:\n");
+$count = $result->rowCount();
+print("Updated  $count rows.\n");
 
+if (!$count) {
+	echo "<html><body><script type='text/javascript'>".mysqli_error($conn).$result."alert('fuck thiss');</script></body></html>";
+}
 ?>

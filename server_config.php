@@ -47,7 +47,8 @@ if(!$_SERVER['HTTP_USER_AGENT']==$_SESSION['agent'])
 //retrieve info
  */
 
-require_once "../configs/config.php";
+//require_once "../configs/config.php";
+require_once "config.php";
 
 //$pass= $_SESSION['hash2'];
 /*$pass= $_COOKIE['hash2'];
@@ -56,7 +57,7 @@ $method = "AES-256-ECB";
 $decrypted_imap_pass=openssl_decrypt($_SESSION['encr_pass'], $method, $pass);
  */
 
-$decrypted_imap_pass=ImapCred();
+$decrypted_imap_pass=GetCredentials();
 
 
 /*
@@ -74,6 +75,9 @@ echo "IMAP_USER: <input type='text' value=".$_SESSION['IMAP_USER']."></br>";
 echo "SMTP_PASSWORD: <input type='text' value='{$decrypted_imap_pass}'></br>";
 
 echo "<input type='submit' name='subname' value='update'></br>";
+
+//var_dump($_COOKIE);
+//var_dump($_SESSION);
 ?>
 </form>
 

@@ -1,6 +1,7 @@
 <?php
-require_once '../configs/config.php';
+require_once 'config.php';
 require_once 'functions/general_functions.php';
+//session_start();
 
 Class Email_reader {
 
@@ -12,13 +13,27 @@ Class Email_reader {
 	private $msg_cnt;
 
 	// email login credentials
-	private $server = config::IMAP_HOST;
-	private $user   = config::SMTP_USER;
-	private $pass   = config::SMTP_PASSWORD;
-	private $port   = config::IMAP_PORT; // adjust according to server settings
+	private $pass//	=GetCredentials()
+		;
+//	private $server = $_SESSION['IMAP_HOST'];
+	private $server// = 'imap.gmail.com'
+		;
+//	private $user   = $_SESSION['IMAP_USER'];
+	private $user  // = 'testinvoice2@gmail.com'
+		;
+//	private $pass   = $decrypted_imap_pass;
+//	private $port   = $_SESSION['IMAP_PORT']; // adjust according to server settings
+	private $port   //= '993'
+		;
 
 	// connect to the server and get the inbox emails
 	function __construct() {
+	$this->server = $_SESSION['IMAP_HOST'];
+		$this->user   = $_SESSION['IMAP_USER'];
+		$this->pass   = GetCredentials();
+		$this->port   = $_SESSION['IMAP_PORT']; // adjust according to server settings
+	
+	
 		$this->connect();
 		$this->inbox();
 	}

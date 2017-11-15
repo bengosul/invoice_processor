@@ -7,7 +7,7 @@ echo '<html><body bgcolor="#000000" text="white"><pre>';
 require_once 'functions/general_functions.php';
 session_start();
 validate_session('Invalid session');
-require_once '../configs/config.php';
+//require_once 'config.php';
 
 echo "<a href='index.php'>Main Page</a>";
 insert_break();
@@ -25,10 +25,11 @@ $invoice_number ="";
 // Begin reading emails	
 require_once 'inbox_class.php';
 
+
 $email_object = New Email_reader();
 
 //list folders
-$folders=imap_list($email_object->conn, "{".config::IMAP_HOST."/ssl}","*");
+$folders=imap_list($email_object->conn, "{".$_SESSION['IMAP_HOST']."/ssl}","*");
 echo "<div class='column' style='width:300px; float:left;'>";
 echo "Listing Folders:"; insert_break();
 print_r($folders); insert_break();

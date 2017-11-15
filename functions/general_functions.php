@@ -6,12 +6,15 @@ echo $brstr;
 }
 
 
-function ImapCred(){
-	isset($_COOKIE['hash2']) ?: invalidate_session('Suspicious activity');
+function GetCredentials($srv='encr_pass'){
+	// supposed to prevent cookie hijack
+	 isset($_COOKIE['hash2']) ?: invalidate_session('Suspicious activity');
+
 	$pass= $_COOKIE['hash2'];
 	$method = "AES-256-ECB";
-	$decrypted_imap_pass=openssl_decrypt($_SESSION['encr_pass'], $method, $pass);
-	return $decrypted_imap_pass;
+	$decrypted_pass=openssl_decrypt($_SESSION[$srv], $method, $pass);
+//die ($decrypted_pass);
+	return $decrypted_pass;
 }
 
 function valid_session(){
@@ -29,8 +32,9 @@ function valid_session(){
 }
 
 function invalidate_session($message=null){
+	setcookie("hash2",'xxx',time()-60*60*24*365*30);
+	setcookie("hash2",'xxx',time()-60*60*24*365*30,'/');
 	session_destroy();
-	setcookie("hash2",null,time()-60*60*24*365*30);
 	session_start();
 	session_regenerate_id();
 	$_SESSION["message"]=$message;
