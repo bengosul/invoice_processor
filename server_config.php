@@ -72,7 +72,13 @@ echo "IMAP_HOST: <input type='text' value=".$_SESSION['IMAP_HOST']."></br>";
 echo "IMAP_PORT: <input type='text' value=".$_SESSION['IMAP_PORT']."></br>";
 //echo "SMTP_USER: <input type='text' value=".Config::SMTP_USER."></br>";
 echo "IMAP_USER: <input type='text' value=".$_SESSION['IMAP_USER']."></br>";
-echo "SMTP_PASSWORD: <input type='text' value='{$decrypted_imap_pass}'></br>";
+echo "SMTP_PASSWORD: <input type='password' value='{$decrypted_imap_pass}'></br></br>";
+
+echo "MYSQL_SERVER: <input type='text' value=".config::MYSQL_SERVER."></br>";
+echo "MYSQL_USER: <input type='text' value=".config::MYSQL_USER."></br>";
+echo "MYSQL_EMAILDB: <input type='text' value=".config::MYSQL_EMAILDB."></br>";
+echo "MYSQL_PWD: <input type='text' value=".GetCredentials('encr_mysql_pass')."></br>";
+
 
 echo "<input type='submit' name='subname' value='update'></br>";
 

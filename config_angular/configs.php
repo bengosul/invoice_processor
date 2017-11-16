@@ -18,7 +18,7 @@ validate_session('Invalid session');
 
 
   </head>
-  <body>
+  <body bgcolor="#001155">
 
 
 

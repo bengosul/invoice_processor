@@ -132,7 +132,12 @@ $scope.gridOptions.onRegisterApi = function(gridApi) {
 			return alert ('config and partner must have a name');  }
 		//Do your REST call here via $hhtp.get or $http.post
 		//This alert just shows which info about the edit is available
-	$http.post("../functions/update_configs_rest.php", {id:rowEntity.id, config_name:rowEntity.config_name, partner:rowEntity.partner, email:rowEntity.email}, {headers: {'Content-Type': 'application/json'} })
+	$http.post("../functions/update_configs_rest.php", {id:rowEntity.id, config_name:rowEntity.config_name, partner:rowEntity.partner
+	   , email:rowEntity.email, subject:rowEntity.subject, atttype:rowEntity.atttype, inv_no_str:rowEntity.inv_no_str, inv_no_col_offset:rowEntity.inv_no_col_offset
+	   , inv_no_row_offset:rowEntity.inv_no_row_offset, inv_date_str:rowEntity.inv_date_str, inv_date_col_offset:rowEntity.inv_date_col_offset
+       , inv_date_row_offset:rowEntity.inv_date_row_offset, inv_date_format:rowEntity.inv_date_format}
+
+	, {headers: {'Content-Type': 'application/json'} })
 		        .then(function (response) {
 					if (response.data.indexOf("fuck") !== -1 ) {
 				alert ('oh shit');

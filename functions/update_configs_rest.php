@@ -33,7 +33,12 @@ print json_encode($data);
 $_POST = json_decode(file_get_contents('php://input'), true);
 if(!empty($_POST['id']))
 {
-	$upd_query="UPDATE {$dbname}.match_config set config_name='{$_POST['config_name']}', partner='{$_POST['partner']}' where id = {$_POST['id']}";
+	$upd_query="UPDATE {$dbname}.match_config set config_name='{$_POST['config_name']}', partner='{$_POST['partner']}', ".
+	"email='{$_POST['email']}', subject='{$_POST['subject']}', atttype='{$_POST['atttype']}', inv_no_str='{$_POST['inv_no_str']}', ".
+	"inv_no_str='{$_POST['inv_no_str']}', inv_no_col_offset='{$_POST['inv_no_col_offset']}', inv_no_row_offset='{$_POST['inv_no_row_offset']}', ".
+	"inv_date_str='{$_POST['inv_date_str']}', inv_date_col_offset='{$_POST['inv_date_col_offset']}', inv_date_row_offset='{$_POST['inv_date_row_offset']}', ".
+	"inv_date_format='{$_POST['inv_date_format']}' ".
+	" where id = {$_POST['id']}";
 }
 else{
 	$upd_query="INSERT {$dbname}.match_config (config_name) VALUES('{$_POST['config_name']}')";
@@ -62,6 +67,6 @@ $count = $result->rowCount();
 print("Updated  $count rows.\n");
 
 if (!$count) {
-	echo "<html><body><script type='text/javascript'>".mysqli_error($conn).$result."alert('fuck thiss');</script></body></html>";
+	echo "<html><body><script type='text/javascript'>".$result->error.$result."alert('fuck thiss');</script></body></html>";
 }
 ?>
