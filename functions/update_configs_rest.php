@@ -41,7 +41,7 @@ if(!empty($_POST['id']))
 	" where id = {$_POST['id']}";
 }
 else{
-	$upd_query="INSERT {$dbname}.match_config (config_name) VALUES('{$_POST['config_name']}')";
+	$upd_query="INSERT {$dbname}.match_config (config_name, partner) VALUES('{$_POST['config_name']}','{$_POST['partner']}')";
 
 }
 
@@ -67,6 +67,6 @@ $count = $result->rowCount();
 print("Updated  $count rows.\n");
 
 if (!$count) {
-	echo "<html><body><script type='text/javascript'>".$result->error.$result."alert('fuck thiss');</script></body></html>";
+	echo "<html><body><script type='text/javascript'>".print_r($result->errorInfo())."alert('fuck thiss');</script></body></html>";
 }
 ?>
