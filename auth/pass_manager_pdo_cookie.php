@@ -28,7 +28,11 @@ foreach ($existingArray as $item){
 			$hash2 = password_hash($_POST['password'], PASSWORD_DEFAULT, [ "cost" => 10, "salt"=> $item["salt"] ]);
 			setcookie("hash2",$hash2,time()+60*60*2,'/');
 				$_COOKIE["hash2"]=$hash2;
+
 			$_SESSION["encr_mysql_pass"]=$item["encrypted_mysql_pass"];
+			$_SESSION["cloudarity_name"]=$item["cloudarity_name"];
+			$_SESSION["cloudarity_api_key"]=$item["cloudarity_api_key"];
+			$_SESSION["cloudarity_secret_encr"]=$item["cloudarity_secret_encr"];
 
 			//PDO mysql
 			require_once '../functions/db_connection_pdo.php';
@@ -49,6 +53,7 @@ foreach ($existingArray as $item){
 			$_SESSION["IMAP_PORT"]=$result["IMAP_PORT"];
 			$_SESSION["IMAP_USER"]=$result["IMAP_USER"];
 			$_SESSION["encr_pass"]=$result["imap_pass_encr"];
+
 			$_SESSION["username"]=$result["username"];
 			$_SESSION["agent"]=$_SERVER['HTTP_USER_AGENT'];
 			$_SESSION["init_time"]=date("m/d/Y H:i:s");

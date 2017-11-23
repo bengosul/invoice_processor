@@ -19,6 +19,8 @@
 <a href="server_config.php">Server Config</a></br>
 </br>
 <a href="account.php">Account</a></br>
+</br>
+<a href="test.php">Test</a></br>
 
 <?php 
 //session_start();

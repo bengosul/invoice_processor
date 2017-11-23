@@ -83,7 +83,7 @@ echo "MYSQL_PWD: <input type='text' value=".GetCredentials('encr_mysql_pass').">
 echo "<input type='submit' name='subname' value='update'></br>";
 
 //var_dump($_COOKIE);
-//var_dump($_SESSION);
+var_dump($_SESSION);
 ?>
 </form>
 
