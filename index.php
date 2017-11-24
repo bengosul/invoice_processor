@@ -20,6 +20,8 @@
 </br>
 <a href="account.php">Account</a></br>
 </br>
+<a href="cloudinarytest.php">Cloudinary Test</a></br>
+</br>
 <a href="test.php">Test</a></br>
 
 <?php 

@@ -114,7 +114,30 @@ if ($row_att['invoice_number']) {echo true;} else {echo false;} echo "</td>
 				<td>{$row_att['invoice_amount']}</td>
 				<td>{$row_att['invoice_number']}</td>
 				<td>{$row_att['invoice_date']}</td>
-				<td><a download='{$dlname_orig}' href='{$filename_orig}'>Download</a></td>
+".
+/*				<td><a download='{$dlname_orig}' href='{$filename_orig}'>Download</a></td>
+
+	         	<td>
+				<form target=\"_blank\" style=\"display:inline\" name=\"f2\" action=\"returncloudinaryfile.php\" method=\"post\" >
+						<input type=\"hidden\" value=\"{$row_att['url']}\" name=\"cloudarity_url\">
+						<input type=\"hidden\" value=\"{$row_att['fn']}\" name=\"fn\">
+						<input  style=\"width:100%;height:100%;padding-bottom:0px\" id=\"repr\" type=\"submit\" name=\"repr\" value=\"Download\" />
+					 </form>
+				</td>
+
+*/
+"
+
+	         	<td>
+				<form target=\"_blank\" style=\"display:inline\" name=\"f2\" action=\"returncloudinaryfile.php\" method=\"post\" >
+						<input type=\"hidden\" value=\"http://goo.gl/oMeP1B\" name=\"cloudinary_url\">
+						<input type=\"hidden\" value=\"caca.png\" name=\"fn\">
+						<input  style=\"width:100%;height:100%;padding-bottom:0px\" id=\"repr\" type=\"submit\" name=\"repr\" value=\"Download\" />
+					 </form>
+				</td>
+
+
+
 				<td><a href='{$filename_txt}'>Download</a></td>
 	         	<td>
 				<form style=\"display:inline\" name=\"f2\" action=\"process_saved_files.php\" method=\"post\" >

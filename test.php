@@ -1,29 +1,13 @@
-<?php 
+<?php
 
-require_once "functions/general_functions.php";
+//$ch=curl_init('http://goo.gl/yp6VAe');
+//$ch=curl_init('http://res.cloudinary.com/hiuo9fkio/image/upload/v1511536359/admin/example_wgimfq.png');
+//curl_exec($ch);
 
-require_once $_SERVER['DOCUMENT_ROOT'].'/invoice_processor/cloudinary/Cloudinary.php';
-require_once $_SERVER['DOCUMENT_ROOT'].'/invoice_processor/cloudinary/Uploader.php';
-require_once $_SERVER['DOCUMENT_ROOT'].'/invoice_processor/cloudinary/Api.php';
+file_get_contents('http://goo.gl/yp6VAe');
 
-session_start();
-
-var_dump($_SESSION);
-
-
-Cloudinary::config(array(
-	"cloud_name" 	=> $_SESSION["cloudarity_name"],
-	"api_key"	=> $_SESSION["cloudarity_api_key"],
-	"api_secret" => GetCredentials('cloudarity_secret_encr')
-
-));
-
-	echo  GetCredentials('cloudarity_secret_encr');
-
-//var_dump(phpinfo());
-
-$res = \Cloudinary\Uploader::upload('http://domaingang.com/wp-content/uploads/2012/02/example.png');
-
-var_dump($res);
+header('Content-Disposition: attachment; filename="caca.png"');
+//readfile('http://goo.gl/yp6VAe');
+readfile('goo.gl/oMeP1B');
 
 ?>
