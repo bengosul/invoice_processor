@@ -30,9 +30,9 @@ foreach ($existingArray as $item){
 				$_COOKIE["hash2"]=$hash2;
 
 			$_SESSION["encr_mysql_pass"]=$item["encrypted_mysql_pass"];
-			$_SESSION["cloudarity_name"]=$item["cloudarity_name"];
-			$_SESSION["cloudarity_api_key"]=$item["cloudarity_api_key"];
-			$_SESSION["cloudarity_secret_encr"]=$item["cloudarity_secret_encr"];
+			$_SESSION["cloudinary_name"]=$item["cloudinary_name"];
+			$_SESSION["cloudinary_api_key"]=$item["cloudinary_api_key"];
+			$_SESSION["cloudinary_secret_encr"]=$item["cloudinary_secret_encr"];
 
 			//PDO mysql
 			require_once '../functions/db_connection_pdo.php';
