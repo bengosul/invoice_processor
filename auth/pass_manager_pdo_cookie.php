@@ -65,7 +65,7 @@ foreach ($existingArray as $item){
 	}
 	else {
 		$_SESSION["message"]="No such username";
-		header("Location: "."account.php");
+		header("Location: "."../account.php");
 		exit;
 	}
 }
