@@ -15,14 +15,16 @@ require_once "config.php";
 
 $decrypted_imap_pass=GetCredentials();
 
-if(!isset($_POST['adduser'])){
 	echo "<form action = 'add_user.php' method='post'>\n";
 	echo "Username: <input type='text' name='username' value=''></br>\n";
 	echo "Password: <input type='password' name='password' autofocus></br>\n";
 	echo "<input type='submit' name='adduser' value = 'Add User'>\n";
 	echo "</form>";
+
+if(!isset($_POST['adduser'])){
 }
 else{
+	echo "<p style='color:red;'>User added</p></br>";
 $credentials=array();
 
 $credentials['password'] = password_hash($_POST['password'], PASSWORD_DEFAULT);
@@ -52,7 +54,6 @@ $credentials['cloudinary_api_key']="963173329168911";
 $credentials["cloudinary_secret_encr"]=$encrypted;
 
 //$decrypted=openssl_decrypt($encrypted, $method, $pass);
-
 //$decrypted=openssl_decrypt('rzM3QGpWO9h9E2zuYpkLOA==', $method, $pass);
 
 file_put_contents('db/passfile.dat',serialize($credentials).PHP_EOL,FILE_APPEND) ;

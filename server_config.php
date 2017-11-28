@@ -11,77 +11,57 @@ session_start();
 //die (var_dump($_SESSION));
 
 validate_session('Invalid session');
-/*
-//process mailserver pass
-if(isset($_COOKIE["hash2"])){
-	echo "<p>cookie: ".$_COOKIE["hash2"]."</p>";
-	echo "init_time: ".$_SESSION['init_time'].'</br></br>';
-	$data_init=strtotime($_SESSION['init_time']);
-
-	if($data_init<time()-60*60*2){
-		echo 'data_init: '.$data_init.'</br>';
-		echo 'data_init_conv: '.date("m/d/Y H:i:s",$data_init);
-		echo 'time: '.time().'</br>';
-		echo 'time_conv: '.date("m/d/Y H:i:s",time());
-		session_destroy();
-		die("SESSION EXPIRED </br><a href=\"/account.php\">Account</a></br>");
-	}
-//	echo date("m/d/Y h:i:s", $data_init);
-//	echo time().'</br>';
-//	echo $data_init.'</br>';
-}else{
-	session_destroy();
-	die ("No cookie? not logged in".'</br><a href="index.php">Main</a></br>');
-}
-
-//isset($_SESSION['hash2']) ?: die ("Not logged in");
-
-if(!$_SERVER['HTTP_USER_AGENT']==$_SESSION['agent'])
-{
-	session_destroy();
-	die ("Hijack");
-}  
-
-//var_dump($_SESSION);
-//echo date("m/d/Y h:i:s");
-//retrieve info
- */
-
-//require_once "../configs/config.php";
 require_once "config.php";
 
-//$pass= $_SESSION['hash2'];
-/*$pass= $_COOKIE['hash2'];
-$method = "AES-256-ECB";
-
-$decrypted_imap_pass=openssl_decrypt($_SESSION['encr_pass'], $method, $pass);
- */
-
 $decrypted_imap_pass=GetCredentials();
+if(isset($_POST['subname'])){
+require_once('functions/db_connection_pdo.php');
+// de encryptat aici imap_pass
 
-
-/*
-if(isset($_COOKIE["cook"])){
-echo "<p>cookie: ".$_COOKIE["cook"]."</p>";
+if(!$_POST['isnew']){
+// de rezolvat cu id user
+// de facut aici update
+	$upd_query="INSERT {$dbname}.server_config (main, id_login, imap_host, imap_port, imap_user, imap_pass_encr) VALUES('1','','{$_POST['imap_host']}','{$_POST['imap_port']}','{$_POST['imap_user']}','{$_POST['imap_pass']}')";
 }
- */
+else{
+	$upd_query="INSERT {$dbname}.server_config (main, id_login, imap_host, imap_port, imap_user, imap_pass_encr) VALUES('1','1','{$_POST['imap_host']}','{$_POST['imap_port']}','{$_POST['imap_user']}','{$_POST['imap_pass']}')";
 
-//echo "IMAP_HOST: <input type='text' value=".Config::IMAP_HOST."></br>";
-echo "IMAP_HOST: <input type='text' value=".$_SESSION['IMAP_HOST']."></br>";
-//echo "IMAP_PORT: <input type='text' value=".Config::IMAP_PORT."></br>";
-echo "IMAP_PORT: <input type='text' value=".$_SESSION['IMAP_PORT']."></br>";
-//echo "SMTP_USER: <input type='text' value=".Config::SMTP_USER."></br>";
-echo "IMAP_USER: <input type='text' value=".$_SESSION['IMAP_USER']."></br>";
-echo "SMTP_PASSWORD: <input type='password' value='{$decrypted_imap_pass}'></br></br>";
+}
 
-echo "MYSQL_SERVER: <input type='text' value=".config::MYSQL_SERVER."></br>";
-echo "MYSQL_USER: <input type='text' value=".config::MYSQL_USER."></br>";
-echo "MYSQL_EMAILDB: <input type='text' value=".config::MYSQL_EMAILDB."></br>";
-echo "MYSQL_PWD: <input type='text' value=".GetCredentials('encr_mysql_pass')."></br>";
 
+$result = $conn->prepare($upd_query);
+$result->execute();
+
+print("Return number of rows that were affected:\n");
+$count = $result->rowCount();
+print("Updated  $count rows.\n");
+
+if (!$count) {
+	echo "<html><body><script type='text/javascript'>".print_r($result->errorInfo())."alert('fuck thiss');</script></body></html>";
+}
+
+echo "</br>";
+}
+
+
+echo "<form action = 'server_config.php' method='post'>\n";
+echo "<input type='hidden' name='isnew' value=".!isset($_SESSION['IMAP_HOST'])."></br>";
+echo "IMAP_HOST: <input type='text' name='imap_host' value=".$_SESSION['IMAP_HOST']."></br>";
+echo "IMAP_PORT: <input type='text' name='imap_port' value=".$_SESSION['IMAP_PORT']."></br>";
+echo "IMAP_USER: <input type='text' name='imap_user' value=".$_SESSION['IMAP_USER']."></br>";
+echo "SMTP_PASSWORD: <input type='password' name='imap_pass' value='{$decrypted_imap_pass}'></br></br>";
+
+echo "MYSQL_SERVER: <input size=".strlen(trim(config::MYSQL_SERVER))." type='text' value=".config::MYSQL_SERVER." disabled></br>";
+echo "MYSQL_USER: <input type='text' value=".config::MYSQL_USER." disabled></br>";
+echo "MYSQL_EMAILDB: <input type='text' value=".config::MYSQL_EMAILDB." disabled></br>";
+echo "MYSQL_PWD: <input type='text' value=".GetCredentials('encr_mysql_pass')." disabled></br></br>";
+
+echo "Cloudinary_Name: <input type='text' value=".$_SESSION['cloudinary_name']." disabled></br>";
+echo "Cloudinary_Key: <input type='text' value=".$_SESSION['cloudinary_api_key']." disabled></br>";
+echo "Cloudinary_secret: <input size=".strlen(Getcredentials('cloudinary_secret_encr')) ." type='text' value=".GetCredentials('cloudinary_secret_encr')." disabled></br></br>";
 
 echo "<input type='submit' name='subname' value='update'></br>";
-
+echo "</form>";
 //var_dump($_COOKIE);
 var_dump($_SESSION);
 ?>

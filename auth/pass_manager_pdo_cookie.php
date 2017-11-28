@@ -39,14 +39,15 @@ foreach ($existingArray as $item){
 			echo $servername.":". $username.":". $password.":". $dbname ;
 			echo "Connected successfully";
 			//this needs rebuilt, no more need to include passwords in l from mysql, also imap pass encr does not need to lie within the file
-			$sql ="SELECT l.id, l.username, l.passhash, l.salt2, 
-						sc.IMAP_HOST, sc.IMAP_PORT, sc.IMAP_USER, sc.imap_pass_encr 
+			$sql ="SELECT l.id, l.username, ".
+//, l.passhash, l.salt2, 
+						"sc.IMAP_HOST, sc.IMAP_PORT, sc.IMAP_USER, sc.imap_pass_encr 
 					FROM {$dbname}.logins l right join {$dbname}.server_config sc 
 					ON l.id=sc.id_login
 					WHERE main = 1
 					AND username='".$_POST['username']."'
 				";
-				$result = $conn->query($sql) or die($conn->error);
+				$result = $conn->query($sql) or die($conn->errorInfo);
 				$result = $result->fetch(PDO::FETCH_ASSOC);
 
 			$_SESSION["IMAP_HOST"]=$result["IMAP_HOST"];
@@ -55,6 +56,7 @@ foreach ($existingArray as $item){
 			$_SESSION["encr_pass"]=$result["imap_pass_encr"];
 
 			$_SESSION["username"]=$result["username"];
+			$_SESSION["idusername"]=$result["id"];
 			$_SESSION["agent"]=$_SERVER['HTTP_USER_AGENT'];
 			$_SESSION["init_time"]=date("m/d/Y H:i:s");
 			$_SESSION["refresh_time"]=date("m/d/Y H:i:s");
@@ -62,16 +64,15 @@ foreach ($existingArray as $item){
 			header("Location: "."../server_config.php");
 			return;	
 		}
-	}
 	else {
-		$_SESSION["message"]="No such username";
+		$_SESSION["message"]="Wrong password";
 		header("Location: "."../account.php");
 		exit;
+		}
 	}
 }
 
-
 //redirect back if not found
-$_SESSION["message"]="Login failed";
+$_SESSION["message"]="No such username";
 header("Location: "."../account.php");
 ?>
