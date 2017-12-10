@@ -21,15 +21,14 @@ $decrypted_imap_pass=GetCredentials();
 	echo "<input type='submit' name='adduser' value = 'Add User'>\n";
 	echo "</form>";
 
-if(!isset($_POST['adduser'])){
-}
+if(!isset($_POST['adduser'])){}
 else{
 	echo "<p style='color:red;'>User added</p></br>";
-$credentials=array();
+    $credentials=array();
 
-$credentials['password'] = password_hash($_POST['password'], PASSWORD_DEFAULT);
-$credentials['username']=$_POST['username'];
-$credentials['salt']="saremarededouazeciplus";
+    $credentials['password'] = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $credentials['username']=$_POST['username'];
+    $credentials['salt']="saremarededouazeciplus";
 
 	$masterpass=$_POST['password'];
 	$texttoencrypt=$_POST['password'];
@@ -39,26 +38,34 @@ $credentials['salt']="saremarededouazeciplus";
 	$method = "AES-256-ECB";
 	$encrypted=openssl_encrypt($texttoencrypt, $method, $pass);
 
-$credentials["encrypted_imap_pass"]=$encrypted;
+    $credentials["encrypted_imap_pass"]=$encrypted;
 
 	$decrypted_mysql_pass=GetCredentials('encr_mysql_pass');
 	$encrypted=openssl_encrypt($decrypted_mysql_pass, $method, $pass);
 
-$credentials["encrypted_mysql_pass"]=$encrypted;
-$credentials['cloudinary_name']="hiuo9fkio";
-$credentials['cloudinary_api_key']="963173329168911";
+    $credentials["encrypted_mysql_pass"]=$encrypted;
+    $credentials['cloudinary_name']="hiuo9fkio";
+    $credentials['cloudinary_api_key']="963173329168911";
 
 	$decrypted_cloudinary_pass=GetCredentials('cloudinary_secret_encr');
 	$encrypted=openssl_encrypt($decrypted_cloudinary_pass, $method, $pass);
 
-$credentials["cloudinary_secret_encr"]=$encrypted;
+    $credentials["cloudinary_secret_encr"]=$encrypted;
 
 //$decrypted=openssl_decrypt($encrypted, $method, $pass);
 //$decrypted=openssl_decrypt('rzM3QGpWO9h9E2zuYpkLOA==', $method, $pass);
 
-file_put_contents('db/passfile.dat',serialize($credentials).PHP_EOL,FILE_APPEND) ;
+    file_put_contents('db/passfile.dat',serialize($credentials).PHP_EOL,FILE_APPEND) ;
 
+	//PDO mysql
+	require_once __DIR__.'/functions/db_connection_pdo.php';
+	echo $servername.":". $username.":". $password.":". $dbname ;
+	echo "Connected successfully";
+	//this needs rebuilt, no more need to include passwords in l from mysql, also imap pass encr does not need to lie within the file
+			$sql ="INSERT {$dbname}.logins(username) VALUES ('{$credentials['username']}')";
+			$result = $conn->query($sql) or die($conn->errorInfo);
 }
+
 echo "IMAP_HOST: <input type='text' value=".$_SESSION['IMAP_HOST']."></br>";
 echo "IMAP_PORT: <input type='text' value=".$_SESSION['IMAP_PORT']."></br>";
 echo "IMAP_USER: <input type='text' value=".$_SESSION['IMAP_USER']."></br>";

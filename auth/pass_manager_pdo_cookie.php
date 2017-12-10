@@ -38,17 +38,26 @@ foreach ($existingArray as $item){
 			require_once '../functions/db_connection_pdo.php';
 			echo $servername.":". $username.":". $password.":". $dbname ;
 			echo "Connected successfully";
-			//this needs rebuilt, no more need to include passwords in l from mysql, also imap pass encr does not need to lie within the file
+			//why is this not working?
 			$sql ="SELECT l.id, l.username, ".
 //, l.passhash, l.salt2, 
 						"sc.IMAP_HOST, sc.IMAP_PORT, sc.IMAP_USER, sc.imap_pass_encr 
-					FROM {$dbname}.logins l right join {$dbname}.server_config sc 
+					FROM {$dbname}.logins l left join {$dbname}.server_config sc 
 					ON l.id=sc.id_login
 					WHERE main = 1
 					AND username='".$_POST['username']."'
 				";
 				$result = $conn->query($sql) or die($conn->errorInfo);
 				$result = $result->fetch(PDO::FETCH_ASSOC);
+
+            if(!$result){
+//                invalidate_session("User missing from DB");
+                invalidate_session($sql);
+        		header("Location: "."../account.php");
+        		exit;
+        		}
+
+
 
 			$_SESSION["IMAP_HOST"]=$result["IMAP_HOST"];
 			$_SESSION["IMAP_PORT"]=$result["IMAP_PORT"];
