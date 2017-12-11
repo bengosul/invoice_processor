@@ -50,15 +50,26 @@ foreach ($existingArray as $item){
 				$result = $conn->query($sql) or die($conn->errorInfo);
 				$result = $result->fetch(PDO::FETCH_ASSOC);
 
-            if(!$result){
-//                invalidate_session("User missing from DB");
-                invalidate_session($sql);
-        		header("Location: "."../account.php");
-        		exit;
+			if(!$result){
+				$sql = "SELECT l.id, l.username 
+					FROM {$dbname}.logins l
+					WHERE username='".$_POST['username']."'";
+				$result = $conn->query($sql) or die($conn->errorInfo);
+				$result = $result->fetch(PDO::FETCH_ASSOC);
+
+				$result["IMAP_HOST"]=null;
+				$result["IMAP_PORT"]=null;
+				$result["IMAP_USER"]=null;
+				$result["imap_encr_pass"]=null;
+
+			    if(!$result){
+				invalidate_session("User missing from DB");
+				header("Location: "."../account.php");
+				exit;
         		}
 
-
-
+}
+			
 			$_SESSION["IMAP_HOST"]=$result["IMAP_HOST"];
 			$_SESSION["IMAP_PORT"]=$result["IMAP_PORT"];
 			$_SESSION["IMAP_USER"]=$result["IMAP_USER"];
@@ -66,6 +77,7 @@ foreach ($existingArray as $item){
 
 			$_SESSION["username"]=$result["username"];
 			$_SESSION["idusername"]=$result["id"];
+//	$_SESSION["idusername"]=$sql;
 			$_SESSION["agent"]=$_SERVER['HTTP_USER_AGENT'];
 			$_SESSION["init_time"]=date("m/d/Y H:i:s");
 			$_SESSION["refresh_time"]=date("m/d/Y H:i:s");

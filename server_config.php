@@ -19,12 +19,17 @@ require_once('functions/db_connection_pdo.php');
 // de encryptat aici imap_pass
 
 if(!$_POST['isnew']){
-// de rezolvat cu id user
 // de facut aici update
-	$upd_query="INSERT {$dbname}.server_config (main, id_login, imap_host, imap_port, imap_user, imap_pass_encr) VALUES('1','','{$_POST['imap_host']}','{$_POST['imap_port']}','{$_POST['imap_user']}','{$_POST['imap_pass']}')";
+	$encrypted=openssl_encrypt($_POST['imap_pass'], "AES-256-ECB", $_COOKIE["hash2"]);
+
+	$upd_query="UPDATE {$dbname}.server_config 
+	SET main=1, id_login={$_SESSION['idusername']},imap_host='{$_POST['imap_host']}',imap_port='{$_POST['imap_port']}',imap_user='{$_POST['imap_user']}',imap_pass_encr='{$encrypted}'
+	WHERE main=1 and id_login='{$_SESSION['idusername']}'
+";
 }
 else{
-	$upd_query="INSERT {$dbname}.server_config (main, id_login, imap_host, imap_port, imap_user, imap_pass_encr) VALUES('1','1','{$_POST['imap_host']}','{$_POST['imap_port']}','{$_POST['imap_user']}','{$_POST['imap_pass']}')";
+	$upd_query="INSERT {$dbname}.server_config (main, id_login, imap_host, imap_port, imap_user, imap_pass_encr) VALUES('1','{$_SESSION['idusername']}','{$_POST['imap_host']}','{$_POST['imap_port']}','{$_POST['imap_user']}','{$encrypted}')";
+
 
 }
 
@@ -50,6 +55,7 @@ echo "IMAP_HOST: <input type='text' name='imap_host' value=".$_SESSION['IMAP_HOS
 echo "IMAP_PORT: <input type='text' name='imap_port' value=".$_SESSION['IMAP_PORT']."></br>";
 echo "IMAP_USER: <input type='text' name='imap_user' value=".$_SESSION['IMAP_USER']."></br>";
 echo "SMTP_PASSWORD: <input type='password' name='imap_pass' value='{$decrypted_imap_pass}'></br></br>";
+//echo "SMTP_PASSWORD: <input type='text' name='imap_pass' value='{$decrypted_imap_pass}'></br></br>";
 
 echo "MYSQL_SERVER: <input size=".strlen(trim(config::MYSQL_SERVER))." type='text' value=".config::MYSQL_SERVER." disabled></br>";
 echo "MYSQL_USER: <input type='text' value=".config::MYSQL_USER." disabled></br>";
