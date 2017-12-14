@@ -1,6 +1,5 @@
 <?php 
 
-//WIPWIPWIPWIPWIP
 
 $url=$_POST['cloudinary_url'];
 $fn=$_POST['fn'];

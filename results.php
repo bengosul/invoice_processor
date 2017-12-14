@@ -129,7 +129,7 @@ if ($row_att['invoice_number']) {echo true;} else {echo false;} echo "</td>
 "
 
 	         	<td>
-				<form target=\"_blank\" style=\"display:inline\" name=\"f2\" action=\"returncloudinaryfile.php\" method=\"post\" >
+				<form target=\"_blank\" style=\"display:inline\" name=\"f2\" action=\"downloadcloudinaryfile.php\" method=\"post\" >
 						<input type=\"hidden\" value=\"http://goo.gl/oMeP1B\" name=\"cloudinary_url\">
 						<input type=\"hidden\" value=\"caca.png\" name=\"fn\">
 						<input  style=\"width:100%;height:100%;padding-bottom:0px\" id=\"repr\" type=\"submit\" name=\"repr\" value=\"Download\" />

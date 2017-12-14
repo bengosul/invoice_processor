@@ -21,13 +21,13 @@ Cloudinary::config(array(
 
 ));
 
-$api = new \Cloudinary\Api();
-$resources = ((array) $api->resources(["type" => "upload", "prefix" => "admin"])['resources']);
-echo "<pre>";
-foreach ($resources as $resource) {
-//echo $resource['public_id']."</br>";
-var_dump($resource);
-//echo cl_image_tag($resource['public_id']);
+function returnCloudinaryArray($pfx){
+    $api = new \Cloudinary\Api();
+    $resources = ((array) $api->resources(["type" => "upload", "prefix" => "admin/file_{$pfx}", "resource_type"=> "raw"])['resources']);
+    echo "<pre>";
+    foreach ($resources as $resource) {
+        var_dump($resource);
+        }
 }
 
 
