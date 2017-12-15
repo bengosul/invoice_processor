@@ -26,8 +26,9 @@ function returnCloudinaryArray($pfx){
     $resources = ((array) $api->resources(["type" => "upload", "prefix" => "admin/file_{$pfx}", "resource_type"=> "raw"])['resources']);
     echo "<pre>";
     foreach ($resources as $resource) {
-        var_dump($resource);
+        //var_dump($resource);
         }
+    return $resources;
 }
 
 

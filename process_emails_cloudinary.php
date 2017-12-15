@@ -151,7 +151,13 @@ echo $sql;
 				echo	"</br>insertid: ".$conn->lastInsertId();
 //				print_r($attachments[$i]);
 				$fn="file_".sprintf('%06d',$conn->lastInsertId())."_".sprintf('%02d',$count)."_".$attachments[$i]['filename'];
-				file_put_contents("fisier", $attachments[$i]['attachment']);
+				$unencryptedAtt=$attachments[$i]['attachment'];
+				
+				$pass = 'inv';
+                $method = "AES-256-ECB";
+                $encrypted=openssl_encrypt($unencryptedAtt, $method, $pass);
+                file_put_contents('fisier',$encrypted);
+//				file_put_contents("fisier", $attachments[$i]['attachment']);
                 $res = \Cloudinary\Uploader::upload('fisier', array("unique_filename"=>FALSE,"public_id"=>$fn,"folder"=>$_SESSION['username'],"resource_type"=>"auto"));
 
 				// echo	mkdir("/store/xxx2");	

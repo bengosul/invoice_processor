@@ -102,6 +102,10 @@ $storelocation="/store/";
 	while($row_att=$result_att->fetch(PDO::FETCH_ASSOC)) {
 
 		$filename_orig=$storelocation.sprintf('%06d',$row_att['id_email']).'_'.sprintf('%02d',$row_att['id_attachment']).'_'.$row_att['fn'].".".$row_att['extension'];
+        $filename_orig='http://res.cloudinary.com/hiuo9fkio/raw/upload/v1513359568/'.$_SESSION['username'].'/file_'.
+                        sprintf('%06d',$row_att['id_email']).'_'.sprintf('%02d',$row_att['id_attachment']).
+                        '_'.$row_att['fn'].".".$row_att['extension'];
+//die ($filename_orig);
 		$filename_txt=$storelocation."temp/".sprintf('%06d',$row_att['id_email']).'_'.sprintf('%02d',$row_att['id_attachment']).'_'.$row_att['fn'].".txt";
 		$dlname_orig=$row_att['accname']."_".sprintf('%06d',$row_att['id_email']).'_'.sprintf('%02d',$row_att['id_attachment']).'_'.$row_att['fn'].".".$row_att['extension'];
 //		echo "\nrowdmp: ".	 var_dump($row);
@@ -130,8 +134,8 @@ if ($row_att['invoice_number']) {echo true;} else {echo false;} echo "</td>
 
 	         	<td>
 				<form target=\"_blank\" style=\"display:inline\" name=\"f2\" action=\"downloadcloudinaryfile.php\" method=\"post\" >
-						<input type=\"hidden\" value=\"http://goo.gl/oMeP1B\" name=\"cloudinary_url\">
-						<input type=\"hidden\" value=\"caca.png\" name=\"fn\">
+						<input type=\"hidden\" value=\"{$filename_orig}\" name=\"cloudinary_url\">
+						<input type=\"hidden\" value=\"{$dlname_orig}\" name=\"fn\">
 						<input  style=\"width:100%;height:100%;padding-bottom:0px\" id=\"repr\" type=\"submit\" name=\"repr\" value=\"Download\" />
 					 </form>
 				</td>

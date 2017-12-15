@@ -7,7 +7,6 @@ $fn=$_POST['fn'];
 
 // echo "URL: ".$url."  Filenmame: ".$fn."  ";
 
-
 $page=file_get_contents($url);
 $pass = 'inv';
 $method = "AES-256-ECB";

@@ -4,13 +4,16 @@ if(php_sapi_name()!="cli"){
 }
 
 require_once 'functions/general_functions.php';
+
 session_start();
 validate_session('Invalid session');
-require_once 'functions/db_connection_pdo.php';
 
+require_once 'functions/db_connection_pdo.php';
 echo "Connected successfully";
 insert_break();
-		
+
+require_once 'returncloudinarylist.php';		
+
 		//only while testing
 /*		$sql = "UPDATE {$dbname}.`processed_emails`
 				SET parsed=0";
@@ -25,45 +28,32 @@ $sql = "SELECT * from {$dbname}.processed_emails WHERE id={$_POST['id_email']}";
 			
 }
 
+$result = $conn->query($sql) or die(print_r($conn->errorInfo()['2']));
+$result = $result->fetchAll(PDO::FETCH_ASSOC);
+
 //if($result = $conn->query($sql))
-if(0==0)
+if($result)
 {
-$sql = "SELECT * from {$dbname}.processed_emails where parsed = 0 and attachments>0";
-$result = $conn->query($sql)->fetchAll(PDO::FETCH_ASSOC) or die($conn->errorInfo);
-//die(print_r($result));
-
-
-$sqltest = "SELECT * FROM `{$dbname}`.`processed_attachments` limit 1";
-echo $sqltest;
-
-// GRAB THE FILENAME HERE AND EXTENSION AND COMPOSE THE URL
-
-$resulttest = $conn->query($sqltest)->fetchAll(PDO::FETCH_ASSOC) or die($conn->errorInfo);
-
-print_r($resulttest);
+//$sql = "SELECT * from {$dbname}.processed_emails where parsed = 0 and attachments>0";
 
 $numrows = $conn->query("SELECT COUNT(*) FROM {$dbname}.processed_emails where parsed = 0 and attachments>0")->fetchColumn();
 
-	if($numrows==0){echo "No new emails"; insert_break();}
+	if($numrows==0){echo "No new emails"; insert_break(); exit();}
 	$processedrow=1;
 	
 //	var_dump($result->fetchAll(PDO::FETCH_ASSOC));
 	
-	foreach($result as $row ) {
+	foreach($result as $row) {
 //print_r($row);
 		//retrieve config:
 		$client_config=retrieve_config($row['from_address'],$conn);
-
-//print_r($row['from_address']);
-//echo ' xxxxx ';
-//print_r($client_config);
 
 		//mark email as processed - ! not good when one attachment is parsed and the other throws an error
 		$sql = "UPDATE `{$dbname}`.`processed_emails`
 				SET parsed =CURRENT_TIMESTAMP, partner = '".$client_config['partner']."'
 				WHERE id =".$row['id'];
-		echo "line 79 sql: ". $sql;
-//temp test        $res = $conn->query($sql) or die($conn->errorInfo);
+		echo "</br>line 79 sql: ". $sql;
+        $res = $conn->query($sql) or die($conn->errorInfo);
 
 		if(!isset($client_config)){
 			echo "Processed row ".$processedrow." of ".$numrows ; insert_break(); 
@@ -71,33 +61,31 @@ $numrows = $conn->query("SELECT COUNT(*) FROM {$dbname}.processed_emails where p
 			continue;}
 
 
-			
 		echo "For ".$row['from_address']." found Partner: ".$client_config['partner'];
 		insert_break();
 		//if ($client_config['partner']=='initial'){echo "config not found";continue;}
-
-
-
+/*
 		// Retrieve filenames that need processing;
+	
 		$filepattern= "../store/".sprintf('%06d',$row['id']);
 		if (isset($_POST['repr'])){
 		$filepattern= "../store/".sprintf('%06d',$row['id'])."_".sprintf('%02d',$_POST['id_attachment']);
-		}
-
-print_r($row);
-
-print_r($filepattern);
-
 		$filenames=glob("$filepattern*.*");
+*/
 
-die (' caca ');
+// SOL1. GRAB THE FILENAME HERE AND EXTENSION AND COMPOSE THE URL
+// SOL2. JUST RETRIEVE the matching array from cloudinary
 
-
+    $cloudinaryEmailMatch=returnCloudinaryArray(sprintf('%06d',$row['id']));
+    
 		$processedfilename=1;
-		foreach ($filenames as $fn){
-			echo $fn;
+		foreach ($cloudinaryEmailMatch as $fn){
+        
+			$fn=$fn['url'];
+
 			$extension = pathinfo($fn, PATHINFO_EXTENSION);
-			$origStripFilename = substr(basename($fn, ".".$extension),10);
+			$origStripFilename = substr(basename($fn, ".".$extension),15);
+			
 			//reset values
 			$invoice_number ="";
 			
@@ -108,7 +96,7 @@ die (' caca ');
 				$fn=str_replace("/store/","/store/temp/",$fn);
 				}
 			
-			echo "Processing row ".$processedrow." of ".$result->num_rows."; file# ".$processedfilename." of ".count($filenames).": ".$fn;
+			echo "Processing row ".$processedrow." of ".$numrows."; file# ".$processedfilename." of ".count($cloudinaryEmailMatch).": ".$fn;
 
 			//parse file
 			$fh = fopen("$fn",'r');
@@ -116,6 +104,7 @@ die (' caca ');
 				// <... Do your work with the line ...>
 			// 		echo($line);
 			//					echo $client_config['inv_no_str']. $client_config['partner'];
+
 				$pos=strpos($line, $client_config['inv_no_str']);
 				if($pos===false) 
 				{continue;}	
@@ -139,6 +128,13 @@ die (' caca ');
 							WHERE id =".$row['id'];
 				//echo "line 79 sql: ". $sql;
 */
+/*
+				$sql = "SELECT * FROM `{$dbname}`.`processed_attachments`
+						WHERE id_email =".$row['id']."
+						AND id_attachment =".$processedfilename;
+				$res=$conn->query($sql) or die($conn->error);
+                die(print_r($res->fetch(PDO::FETCH_ASSOC)));    
+*/
 				$sql = "DELETE FROM `{$dbname}`.`processed_attachments`
 						WHERE id_email =".$row['id']."
 						AND id_attachment =".$processedfilename;
@@ -161,13 +157,12 @@ die (' caca ');
 			}
 			$processedfilename++;
 		}
-	
 		$processedrow++;
 	}
 
 //	$conn->close();
 }
-else {echo "nothing new LE: or rather some db resultset error";}
+else {echo "nothing new";}
 
 //
 //FUNCTIONS
@@ -214,7 +209,6 @@ function prepare_pdf($fn){
 	}
 
 //$conn->close();
-
 
 if (isset($_POST['repr'])){
 	session_start();
