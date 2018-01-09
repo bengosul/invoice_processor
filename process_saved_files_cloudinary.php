@@ -24,6 +24,7 @@ require_once 'returncloudinarylist.php';
 $sql = "SELECT * from {$dbname}.processed_emails WHERE parsed = 0 and attachments>0";
 
 if (isset($_POST['repr'])){
+echo "Reprocessing\n";
 $sql = "SELECT * from {$dbname}.processed_emails WHERE id={$_POST['id_email']}";
 			
 }
@@ -36,8 +37,9 @@ if($result)
 {
 //$sql = "SELECT * from {$dbname}.processed_emails where parsed = 0 and attachments>0";
 
-$numrows = $conn->query("SELECT COUNT(*) FROM {$dbname}.processed_emails where parsed = 0 and attachments>0")->fetchColumn();
+$numrows = $conn->query($sql)->fetchColumn();
 
+//    die ("SELECT COUNT(*) FROM {$dbname}.processed_emails where parsed = 0 and attachments>0");
 	if($numrows==0){echo "No new emails"; insert_break(); exit();}
 	$processedrow=1;
 	
@@ -83,6 +85,10 @@ $numrows = $conn->query("SELECT COUNT(*) FROM {$dbname}.processed_emails where p
         
 			$fn=$fn['url'];
 
+//DOWNLOAD AND DECRYPT
+            $wtf = httpPost("localhost/invoice_processor/downloadcloudinaryfile.php", array("cloudinary_url" => $fn,"fn"=>"doesnotmatter"));
+
+
 			$extension = pathinfo($fn, PATHINFO_EXTENSION);
 			$origStripFilename = substr(basename($fn, ".".$extension),15);
 			
@@ -99,10 +105,11 @@ $numrows = $conn->query("SELECT COUNT(*) FROM {$dbname}.processed_emails where p
 			echo "Processing row ".$processedrow." of ".$numrows."; file# ".$processedfilename." of ".count($cloudinaryEmailMatch).": ".$fn;
 
 			//parse file
-			$fh = fopen("$fn",'r');
+			$fh = fopen("fisier",'r');
+
 			while ($line = fgets($fh)) {
 				// <... Do your work with the line ...>
-			// 		echo($line);
+            //			 		echo("\n".$line);
 			//					echo $client_config['inv_no_str']. $client_config['partner'];
 
 				$pos=strpos($line, $client_config['inv_no_str']);
@@ -211,6 +218,7 @@ function prepare_pdf($fn){
 //$conn->close();
 
 if (isset($_POST['repr'])){
+    die();
 	session_start();
 	$_SESSION['post_data'] = $_POST;
 	header('Location: results.php');

@@ -15,9 +15,9 @@ file_put_contents('fisier',$decrypted);
 
 is_null(error_get_last())?:die(var_dump(error_get_last()));
 
-header('Content-Disposition: attachment; filename="'.$fn.'"');
-readfile('fisier');
-
-
+if($_POST['purpose']='download'){
+    header('Content-Disposition: attachment; filename="'.$fn.'"');
+    readfile('fisier');
+}
 
 ?>

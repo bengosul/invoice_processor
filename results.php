@@ -3,11 +3,14 @@ session_start();
 require_once 'functions/general_functions.php';
 validate_session('Invalid session');
 
+//WTF is this?!
+
 if (isset($_SESSION['post_data'])) {
 	$_POST = $_SESSION['post_data'];
     $_SERVER['REQUEST_METHOD'] = 'POST';
     unset($_SESSION['post_data']);
 }
+
 require_once 'functions/return_processed_emails_array.php';
 ?>
 
@@ -144,9 +147,10 @@ if ($row_att['invoice_number']) {echo true;} else {echo false;} echo "</td>
 
 				<td><a href='{$filename_txt}'>Download</a></td>
 	         	<td>
-				<form style=\"display:inline\" name=\"f2\" action=\"process_saved_files.php\" method=\"post\" >
+				<form style=\"display:inline\" name=\"f2\" action=\"process_saved_files_cloudinary.php\" method=\"post\" >
 						<input type=\"hidden\" value=\"{$row_att['id_email']}\" name=\"id_email\">
 						<input type=\"hidden\" value=\"{$row_att['id_attachment']}\" name=\"id_attachment\">
+						<input type=\"hidden\" value=\"download\" name=\"purpose\">						
 						<input  style=\"width:100%;height:100%;padding-bottom:0px\" id=\"repr\" type=\"submit\" name=\"repr\" value=\"Rerun\" />
 					 </form>
 				</td>

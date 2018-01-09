@@ -151,6 +151,7 @@ echo $sql;
 				echo	"</br>insertid: ".$conn->lastInsertId();
 //				print_r($attachments[$i]);
 				$fn="file_".sprintf('%06d',$conn->lastInsertId())."_".sprintf('%02d',$count)."_".$attachments[$i]['filename'];
+				$fn = preg_replace ('/\?|&|#|\\|%|\<|\>/','_',$fn);
 				$unencryptedAtt=$attachments[$i]['attachment'];
 				
 				$pass = 'inv';
