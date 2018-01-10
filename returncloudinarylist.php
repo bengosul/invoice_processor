@@ -21,9 +21,9 @@ Cloudinary::config(array(
 
 ));
 
-function returnCloudinaryArray($pfx){
+function returnCloudinaryArray($prefix,$folder){
     $api = new \Cloudinary\Api();
-    $resources = ((array) $api->resources(["type" => "upload", "prefix" => "admin/file_{$pfx}", "resource_type"=> "raw"])['resources']);
+    $resources = ((array) $api->resources(["type" => "upload", "prefix" => $folder."/file_{$prefix}", "resource_type"=> "raw"])['resources']);
     echo "<pre>";
     foreach ($resources as $resource) {
         //var_dump($resource);

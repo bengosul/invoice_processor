@@ -37,7 +37,9 @@ if($result)
 {
 //$sql = "SELECT * from {$dbname}.processed_emails where parsed = 0 and attachments>0";
 
+//maybe delete this first one if second works
 $numrows = $conn->query($sql)->fetchColumn();
+$numrows = count($result);
 
 //    die ("SELECT COUNT(*) FROM {$dbname}.processed_emails where parsed = 0 and attachments>0");
 	if($numrows==0){echo "No new emails"; insert_break(); exit();}
@@ -78,31 +80,31 @@ $numrows = $conn->query($sql)->fetchColumn();
 // SOL1. GRAB THE FILENAME HERE AND EXTENSION AND COMPOSE THE URL
 // SOL2. JUST RETRIEVE the matching array from cloudinary
 
-    $cloudinaryEmailMatch=returnCloudinaryArray(sprintf('%06d',$row['id']));
+    $cloudinaryEmailMatch=returnCloudinaryArray(sprintf('%06d',$row['id']), $_SESSION['username']);
     
 		$processedfilename=1;
-		foreach ($cloudinaryEmailMatch as $fn){
+		foreach ($cloudinaryEmailMatch as $fileurl){
         
-			$fn=$fn['url'];
+			$fileurl=$fileurl['url'];
 
-//DOWNLOAD AND DECRYPT
-            $wtf = httpPost("localhost/invoice_processor/downloadcloudinaryfile.php", array("cloudinary_url" => $fn,"fn"=>"doesnotmatter"));
+            //DOWNLOAD AND DECRYPT TO fisier
+            $downloadtofisier = httpPost("localhost/invoice_processor/downloadcloudinaryfile.php", array("cloudinary_url" => $fileurl,"fn"=>"doesnotmatter"));
 
-
-			$extension = pathinfo($fn, PATHINFO_EXTENSION);
-			$origStripFilename = substr(basename($fn, ".".$extension),15);
+			$extension = pathinfo($fileurl, PATHINFO_EXTENSION);
+			$origStripFilename = substr(basename($fileurl, ".".$extension),15);
 			
 			//reset values
 			$invoice_number ="";
 			
 			//check if it's PDF
-			if (substr($fn,-3)=="pdf") {
-				prepare_pdf($fn);
-				$fn=str_replace(".pdf",".txt",$fn);
-				$fn=str_replace("/store/","/store/temp/",$fn);
+			if (substr($fileurl,-3)=="pdf") {
+				prepare_pdf('fisier');
+                $origStripFilename=str_replace(".pdf",".txt",$origStripFilename);
+//no longer applies				$fileurl=str_replace("/store/","/store/temp/",$fileurl);
 				}
-			
-			echo "Processing row ".$processedrow." of ".$numrows."; file# ".$processedfilename." of ".count($cloudinaryEmailMatch).": ".$fn;
+
+
+			echo "Processing row ".$processedrow." of ".$numrows."; file# ".$processedfilename." of ".count($cloudinaryEmailMatch).": ".$fileurl;
 
 			//parse file
 			$fh = fopen("fisier",'r');
@@ -162,6 +164,21 @@ $numrows = $conn->query($sql)->fetchColumn();
 				//add this message to the table too
 				insert_break();
 			}
+			
+
+            //ENCRYPT AND SAVE PROCESSED FILE TO CLOUDINARY
+			$unencryptedAtt=file_get_contents('fisier');
+				
+            //encrypt contents before uploading to cloudinary
+			$pass = 'inv';
+            $method = "AES-256-ECB";
+            $encrypted=openssl_encrypt($unencryptedAtt, $method, $pass);
+            file_put_contents('fisier',$encrypted);
+
+            //upload to cloudinary to user_processed folder
+            $res = \Cloudinary\Uploader::upload('fisier', array("unique_filename"=>FALSE,"public_id"=>'file_'.$origStripFilename,"folder"=>$_SESSION['username']."_processed","resource_type"=>"auto"));
+			
+			
 			$processedfilename++;
 		}
 		$processedrow++;
@@ -208,10 +225,12 @@ function retrieve_config($from_address,$connection){
 }
 
 
+//THIS NEEDS REBUILT
 function prepare_pdf($fn){
 	echo "Preparing PDF ".$fn;
 	insert_break();
 	echo exec("qpdf --decrypt \"".$fn."\"  \"" .str_replace(".pdf",".pdf", str_replace("/store/","/store/temp/",$fn)) . "\""  );
+echo " Now converting to text ";
 	echo exec("pdftotext \"".str_replace("/store/","/store/temp/",$fn)."\"  \"" .str_replace(".pdf",".txt", str_replace("/store/","/store/temp/",$fn)) . "\""  );
 	}
 

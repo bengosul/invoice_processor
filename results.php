@@ -162,6 +162,9 @@ if ($row_att['invoice_number']) {echo true;} else {echo false;} echo "</td>
 ?>
 	</tbody>
 </table>
+
+</br><a href="index.php">Main Page</a></br>
+
 </body>
 
 </html>

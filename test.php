@@ -4,5 +4,8 @@
 
 echo preg_replace ('/\?|&|#|\\|%|\<|\>/',' xxx ','c?a>c#ac&');
 
+echo exec('pwd');
+
+echo phpinfo();
 
 ?>
