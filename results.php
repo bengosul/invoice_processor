@@ -109,8 +109,13 @@ $storelocation="/store/";
                         sprintf('%06d',$row_att['id_email']).'_'.sprintf('%02d',$row_att['id_attachment']).
                         '_'.$row_att['fn'].".".$row_att['extension'];
 //die ($filename_orig);
-		$filename_txt=$storelocation."temp/".sprintf('%06d',$row_att['id_email']).'_'.sprintf('%02d',$row_att['id_attachment']).'_'.$row_att['fn'].".txt";
+//		$filename_txt=$storelocation."temp/".sprintf('%06d',$row_att['id_email']).'_'.sprintf('%02d',$row_att['id_attachment']).'_'.$row_att['fn'].".txt";
+        $filename_txt='http://res.cloudinary.com/hiuo9fkio/raw/upload/v1513359568/'.$_SESSION['username'].'_processed/file_'.
+                        sprintf('%06d',$row_att['id_email']).'_'.sprintf('%02d',$row_att['id_attachment']).
+                        '_'.$row_att['fn'].".txt";
 		$dlname_orig=$row_att['accname']."_".sprintf('%06d',$row_att['id_email']).'_'.sprintf('%02d',$row_att['id_attachment']).'_'.$row_att['fn'].".".$row_att['extension'];
+		$dlname_txt=$row_att['accname']."_".sprintf('%06d',$row_att['id_email']).'_'.sprintf('%02d',$row_att['id_attachment']).'_'.$row_att['fn'].".txt";
+
 //		echo "\nrowdmp: ".	 var_dump($row);
 		echo "<tr>
 				<td>{$row['parsed']}</td>
@@ -143,9 +148,14 @@ if ($row_att['invoice_number']) {echo true;} else {echo false;} echo "</td>
 					 </form>
 				</td>
 
+	         	<td>
+				<form target=\"_blank\" style=\"display:inline\" name=\"f2\" action=\"downloadcloudinaryfile.php\" method=\"post\" >
+						<input type=\"hidden\" value=\"{$filename_txt}\" name=\"cloudinary_url\">
+						<input type=\"hidden\" value=\"{$dlname_txt}\" name=\"fn\">
+						<input  style=\"width:100%;height:100%;padding-bottom:0px\" id=\"repr\" type=\"submit\" name=\"repr\" value=\"Download\" />
+					 </form>
+				</td>
 
-
-				<td><a href='{$filename_txt}'>Download</a></td>
 	         	<td>
 				<form style=\"display:inline\" name=\"f2\" action=\"process_saved_files_cloudinary.php\" method=\"post\" >
 						<input type=\"hidden\" value=\"{$row_att['id_email']}\" name=\"id_email\">

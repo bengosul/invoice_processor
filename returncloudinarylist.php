@@ -8,7 +8,11 @@ require_once $_SERVER['DOCUMENT_ROOT'].'/invoice_processor/cloudinary/Cloudinary
 require_once $_SERVER['DOCUMENT_ROOT'].'/invoice_processor/cloudinary/Uploader.php';
 require_once $_SERVER['DOCUMENT_ROOT'].'/invoice_processor/cloudinary/Api.php';
 require_once "functions/general_functions.php";
-session_start();
+
+if( ! $_SESSION)
+{
+    session_start();
+}  
 
 //file_get_contents('http://goo.gl/yp6VAe');
 //header('Content-Disposition: attachment; filename="caca.png"');

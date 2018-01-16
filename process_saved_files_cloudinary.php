@@ -3,6 +3,8 @@ if(php_sapi_name()!="cli"){
 	echo '<html><body bgcolor="#000000" text="white"><pre>';
 }
 
+require_once 'pdfparser/vendor/autoload.php';
+
 require_once 'functions/general_functions.php';
 
 session_start();
@@ -52,6 +54,7 @@ $numrows = count($result);
 		//retrieve config:
 		$client_config=retrieve_config($row['from_address'],$conn);
 
+        $workingFN = 'fisier';
 		//mark email as processed - ! not good when one attachment is parsed and the other throws an error
 		$sql = "UPDATE `{$dbname}`.`processed_emails`
 				SET parsed =CURRENT_TIMESTAMP, partner = '".$client_config['partner']."'
@@ -80,11 +83,12 @@ $numrows = count($result);
 // SOL1. GRAB THE FILENAME HERE AND EXTENSION AND COMPOSE THE URL
 // SOL2. JUST RETRIEVE the matching array from cloudinary
 
-    $cloudinaryEmailMatch=returnCloudinaryArray(sprintf('%06d',$row['id']), $_SESSION['username']);
+        $cloudinaryEmailMatch=returnCloudinaryArray(sprintf('%06d',$row['id']), $_SESSION['username']);
     
 		$processedfilename=1;
 		foreach ($cloudinaryEmailMatch as $fileurl){
-        
+            
+            $origFilename=basename($fileurl['public_id']);
 			$fileurl=$fileurl['url'];
 
             //DOWNLOAD AND DECRYPT TO fisier
@@ -92,14 +96,13 @@ $numrows = count($result);
 
 			$extension = pathinfo($fileurl, PATHINFO_EXTENSION);
 			$origStripFilename = substr(basename($fileurl, ".".$extension),15);
-			
-			//reset values
-			$invoice_number ="";
-			
+	
+	
 			//check if it's PDF
 			if (substr($fileurl,-3)=="pdf") {
-				prepare_pdf('fisier');
-                $origStripFilename=str_replace(".pdf",".txt",$origStripFilename);
+				prepare_pdf($workingFN);
+                $origFilename=str_replace(".pdf",".txt",$origFilename);
+                $workingFN = $workingFN.'.txt';
 //no longer applies				$fileurl=str_replace("/store/","/store/temp/",$fileurl);
 				}
 
@@ -107,26 +110,102 @@ $numrows = count($result);
 			echo "Processing row ".$processedrow." of ".$numrows."; file# ".$processedfilename." of ".count($cloudinaryEmailMatch).": ".$fileurl;
 
 			//parse file
-			$fh = fopen("fisier",'r');
+			$fh = fopen($workingFN,'r');
 
+
+			//reset values
+			$invoice_number ="";
+			$invoice_date ="";
+			
+            $til_invno=$client_config['inv_no_row_offset'];
+            $til_invno_on=false;
+            $til_invdate=$client_config['inv_date_row_offset'];
+            $til_invdate_on=false;
+
+            $i = 0;
+            
+echo "\nINVNOSTR: ".$client_config['inv_no_str'];
+echo "\nINVDATESTR: ".$client_config['inv_date_str'];
+           
 			while ($line = fgets($fh)) {
-				// <... Do your work with the line ...>
-            //			 		echo("\n".$line);
-			//					echo $client_config['inv_no_str']. $client_config['partner'];
+                $i++; echo "\n\nLine ".($i)." : ".$line;
+				$pos_invno=strpos($line, $client_config['inv_no_str']);
+				$pos_invdate=strpos($line, $client_config['inv_date_str']);
 
-				$pos=strpos($line, $client_config['inv_no_str']);
-				if($pos===false) 
-				{continue;}	
-				else {
-					$invoice_number= substr($line,$pos+strlen($client_config['inv_no_str']),strlen($line)-strlen($client_config['inv_no_str'])-1) ;
-					//		$inv_no_str= preg_replace("/\r\n|\r|\n/", ' ', $inv_no_str);
-					//					insert_break();
-					//		echo "futere:". strlen($line);	
+                echo "POSINVNO: ". $pos_invno;
+                echo "POSINVDT: ". $pos_invdate;
+                
+                //if match found
+			    if($pos_invno!==false) {
+			        echo "inv match found\n";
+			        //if on the right row
+			        if($til_invno==0){
+			            echo "row not yet: {$til_invno}"."\n";
+			            //if there was no row hunting in place
+                        if($til_invno_on==false){
+                            echo "updating invno no hunting \n";
+                            $invoice_number= substr($line,$pos_invno+strlen($client_config['inv_no_str']),strlen($line)-strlen($client_config['inv_no_str'])-1);
+                            }
+                        }
+                    //match found but now row hunting
+			        else {
+			            echo "invno row hunt set\n";
+                        $til_invno_on=true;
+                        }
+                    }
+                else{
+                    //match not found, checking if it was previously found
+                    echo "\ninvno match not found, checking if previously found";
+                    if($til_invno_on==true){
+                        echo "\nprev found indeed";
+                        $til_invno=$til_invno-1;
+                        if($til_invno==0){
+                            echo "\nupdating invno with hunting";
+                            $invoice_number=explode(' ',$line)[0];
+                        }
+                    }
+                }
 
-					break;							
-				}
+                //if match found
+			    if($pos_invdate!==false) {
+                    echo "date match found\n";
+                    //if on the right row
+			        if($til_invdate==0){
+			            echo "date row not yet\n";			            
+			            //if there was no row hunting in place
+                        if($til_invdate_on==false){
+                            echo "\nupdating date no hunting \n";                            
+                            $invoice_date= substr($line,$pos_invdate+strlen($client_config['inv_date_str']),strlen($line)-strlen($client_config['inv_date_str'])-1);
+                            }
+                        }
+                    //match found but now row hunting
+			        else {
+			            echo "date row hunt set\n";			            
+                        $til_invdate_on=true;
+                        }
+                    }
+                else{
+                    //match not found, checking if it was previously found
+                    echo "\ninvdate match not found, checking if previously found";
+                    if($til_invdate_on==true){
+                        $til_invdate=$til_invdate-1;
+                        if($til_invdate==0){
+                            echo "\nupdating invdate with hunting";
+                            $invoice_date=explode(' ',$line)[0];
+                        }
+                    }
+                }
+                    
+
+                //if all is found break loop
+                if($invoice_number and $invoice_date){
+                    echo "\nINVNO: ".$invoice_number ." INVDATE: ".$invoice_date;
+                    echo "\nBREAKING\n";
+                    break;}
+
 			}
 			fclose($fh);
+
 		
 			//Update retrieved data
 			if(strlen($invoice_number)<100){
@@ -150,9 +229,9 @@ $numrows = count($result);
 			
 				$res=$conn->query($sql) or die($conn->error);
 
-				$sql = "INSERT `{$dbname}`.`processed_attachments` (id_email, id_attachment, invoice_number, fn, extension)
-						VALUES (".$row['id'].",".$processedfilename.",'$invoice_number','$origStripFilename','$extension')";
-			
+				$sql = "INSERT `{$dbname}`.`processed_attachments` (id_email, id_attachment, invoice_date, invoice_number, fn, extension)
+						VALUES (".$row['id'].",".$processedfilename.",'".date('Y-m-d',strtotime($invoice_date))."','$invoice_number','$origStripFilename','$extension')";
+			echo '\n\n'.$sql;
 				$res=$conn->query($sql) or die($conn->error);
 				insert_break();
 				echo "updated";
@@ -167,16 +246,17 @@ $numrows = count($result);
 			
 
             //ENCRYPT AND SAVE PROCESSED FILE TO CLOUDINARY
-			$unencryptedAtt=file_get_contents('fisier');
+			$unencryptedAtt=file_get_contents($workingFN);
 				
             //encrypt contents before uploading to cloudinary
 			$pass = 'inv';
             $method = "AES-256-ECB";
             $encrypted=openssl_encrypt($unencryptedAtt, $method, $pass);
-            file_put_contents('fisier',$encrypted);
+            file_put_contents($workingFN,$encrypted);
 
             //upload to cloudinary to user_processed folder
-            $res = \Cloudinary\Uploader::upload('fisier', array("unique_filename"=>FALSE,"public_id"=>'file_'.$origStripFilename,"folder"=>$_SESSION['username']."_processed","resource_type"=>"auto"));
+            //need to catch error here !
+            $res = \Cloudinary\Uploader::upload($workingFN, array("unique_filename"=>FALSE,"public_id"=>$origFilename,"folder"=>$_SESSION['username']."_processed","resource_type"=>"auto"));
 			
 			
 			$processedfilename++;
@@ -194,11 +274,13 @@ else {echo "nothing new";}
 
 function retrieve_config($from_address,$connection){
     global $dbname;
+    /*
 	$array = array(
 			"from_address"=> "",
 			"partner"=> "initial",
 			"inv_no_str" => ""
 			);
+			*/
 //echo $from_address;
 	$sql = "SELECT * from {$dbname}.match_config WHERE email ='$from_address'";
 //echo $sql;
@@ -214,8 +296,11 @@ function retrieve_config($from_address,$connection){
 		
 		echo "found something in config for partnerid : ".$result_config['partner'];
 //print_r($result_config);		
-		$array['partner']=$result_config['partner'];
-		$array['inv_no_str']=$result_config['inv_no_str'];
+//		$array['partner']=$result_config['partner'];
+//		$array['inv_no_str']=$result_config['inv_no_str'];
+
+        $array = $result_config;
+		
 	}
 	else {
 		echo $connection->error; 
@@ -225,8 +310,26 @@ function retrieve_config($from_address,$connection){
 }
 
 
-//THIS NEEDS REBUILT
 function prepare_pdf($fn){
+    
+    //need to catch some errors here !
+   
+   $parser = new \Smalot\PdfParser\Parser();
+    $pdf    = $parser->parseFile($fn);
+     
+    $text = $pdf->getText();
+  
+	echo "Preparing PDF ".$fn;
+	insert_break();
+//	echo exec("qpdf --decrypt \"".$fn."\"  \"" .str_replace(".pdf",".pdf", str_replace("/store/","/store/temp/",$fn)) . "\""  );
+    echo " Now converting to text ";
+//	echo exec("pdftotext \"".str_replace("/store/","/store/temp/",$fn)."\"  \"" .str_replace(".pdf",".txt", str_replace("/store/","/store/temp/",$fn)) . "\""  );
+    file_put_contents($fn.'.txt',$text);
+	}
+
+
+//UNUSED THIS NEEDS REBUILT
+function prepare_pdf_linux($fn){
 	echo "Preparing PDF ".$fn;
 	insert_break();
 	echo exec("qpdf --decrypt \"".$fn."\"  \"" .str_replace(".pdf",".pdf", str_replace("/store/","/store/temp/",$fn)) . "\""  );
