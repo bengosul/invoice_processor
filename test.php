@@ -1,5 +1,7 @@
 <?php
 
+echo get_cfg_var('cfg_file_path');
+
 // Parse pdf file and build necessary objects.
 
 include 'pdfparser/vendor/autoload.php';
